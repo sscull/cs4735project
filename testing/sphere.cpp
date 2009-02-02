@@ -5,9 +5,12 @@
 
 #define WINDOW_HEIGHT 800
 #define WINDOW_WIDTH 800
+#define EARTH_RADIUS 0.63781
 
 void sphereDisplay(void);
-void drawSphere(double);
+void drawSphere(double, double, double, double);
+void drawEarth();
+void drawMoon();
 
 void mouseClick(int, int, int, int);
 void moveCamera(int, int);
@@ -21,15 +24,13 @@ int main(int argc, char **argv) {
 	glutCreateWindow("Sphere");
 
 	glutDisplayFunc(sphereDisplay);
-	glutMouseFunc(mouseClick);
-	glutMotionFunc(moveCamera);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glColor3f(0.0, 0.0, 0.0);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(90.0, 1, 0.1, 15);
+	gluPerspective(90.0, 1, 0.1, 50);
 	gluLookAt(10.0, 10.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -65,28 +66,38 @@ void sphereDisplay(void) {
 	}
 
 	glColor3f(0.5, 0.5, 0.5);
-	drawSphere(5);
+	drawEarth();
 
 	glFlush();
 	glutSwapBuffers();
 }
 
-void drawSphere(double radius) {
-	GLUquadricObj* sph = gluNewQuadric();
-	gluQuadricDrawStyle(sph, GLU_LINE);
-
+void drawEarth() {
+	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	glRotatef(90.0, 1.0, 0.0, 0.0);
-	gluSphere(sph, radius, 100, 100);
+	glLoadIdentity();
+	glRotatef(23.439281, 0.0, 0.0, 1.0);
+	drawSphere(EARTH_RADIUS, 0.0, 0.0, 0.0);
+	drawMoon();
 	glPopMatrix();
 }
 
-void mouseClick(int button, int state, int x, int y) {
-	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
-
-	}
+void drawMoon() {
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	glRotatef(23.439281, 0.0, 0.0, 1.0);
+	drawSphere(EARTH_RADIUS*0.273, 6.0, 0.0, 6.0);
+	glPopMatrix();
 }
 
-void moveCamera(int x, int y) {
+void drawSphere(double radius, double cx, double cy, double cz) {
+	GLUquadricObj* sph = gluNewQuadric();
+	gluQuadricDrawStyle(sph, GLU_FILL);
 
+	glPushMatrix();
+	glTranslatef(cx, cy, cz);
+	glRotatef(90.0, 1.0, 0.0, 0.0);
+	gluSphere(sph, radius, 100, 100);
+	glPopMatrix();
 }
