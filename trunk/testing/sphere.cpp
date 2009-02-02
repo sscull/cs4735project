@@ -6,14 +6,16 @@
 #define WINDOW_HEIGHT 800
 #define WINDOW_WIDTH 800
 #define EARTH_RADIUS 0.63781
+#define MOON_MINOR (6.026857528*EARTH_RADIUS)
+#define MOON_MAJOR (6.01776817*EARTH_RADIUS)
+#define PI 3.1415926
 
 void sphereDisplay(void);
-void drawSphere(double, double, double, double);
+void drawSphere(double);
 void drawEarth();
 void drawMoon();
-
-void mouseClick(int, int, int, int);
-void moveCamera(int, int);
+void initLight();
+void drawMoonOrbit();
 
 int main(int argc, char **argv) {
 	glutInit(&argc, argv);
@@ -25,16 +27,64 @@ int main(int argc, char **argv) {
 
 	glutDisplayFunc(sphereDisplay);
 
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glColor3f(0.0, 0.0, 0.0);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(90.0, 1, 0.1, 50);
-	gluLookAt(10.0, 10.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	gluLookAt(7.0, 7.0, 7.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+	//initLight();
+
+	glutMainLoop();
+}
+
+void sphereDisplay(void) {
+	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+
+	glLineWidth(1.0);
+
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(1.0, 0.0, 0.0);
+	glBegin(GL_LINES);  // X axis (red).
+		glVertex3f(-15.0, 0.0, 0.0);
+		glVertex3f(15.0, 0.0, 0.0);
+	glEnd();
+
+	glColor3f(0.0, 1.0, 0.0);
+	glBegin(GL_LINES);  // Y axis (green).
+		glVertex3f(0.0, -15.0, 0.0);
+		glVertex3f(0.0, 15.0, 0.0);
+	glEnd();
+
+	glColor3f(0.0, 0.0, 1.0);
+	glBegin(GL_LINES);  // Z axis (blue).
+		glVertex3f(0.0, 0.0, -15.0);
+		glVertex3f(0.0, 0.0, 15.0);
+	glEnd();
+
+	for(float i = -15; i <= 15; i++){
+		glPointSize(2.0);
+		glColor3f(0.0, 0.0, 0.0);
+		glBegin(GL_POINTS);
+			glVertex3f(i, 0.0, 0.0);
+			glVertex3f(0.0, i, 0.0);
+			glVertex3f(0.0, 0.0, i);
+		glEnd();
+	}
+
+	glColor3f(0.5, 0.5, 0.5);
+	drawEarth();
+
+	glFlush();
+	glutSwapBuffers();
+}
+
+void initLight(){
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
@@ -47,29 +97,6 @@ int main(int argc, char **argv) {
 	GLfloat pos[] = { 0.0, 15.0, 0.0, 1.0 };
 	glLightfv(GL_LIGHT0, GL_POSITION, pos);
 
-	glutMainLoop();
-}
-
-void sphereDisplay(void) {
-	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-
-	glPointSize(3.0);
-	for (float i = -15.0; i <= 15; i++) {
-		glBegin(GL_POINTS);
-		glColor3f(1.0, 0.0, 0.0);
-		glVertex3f(i, 0, 0); //x axis
-		glColor3f(0.0, 1.0, 0.0);
-		glVertex3f(0, i, 0); //y axis
-		glColor3f(0.0, 0.0, 1.0);
-		glVertex3f(0, 0, i); //z axis
-		glEnd();
-	}
-
-	glColor3f(0.5, 0.5, 0.5);
-	drawEarth();
-
-	glFlush();
-	glutSwapBuffers();
 }
 
 void drawEarth() {
@@ -77,27 +104,57 @@ void drawEarth() {
 	glPushMatrix();
 	glLoadIdentity();
 	glRotatef(23.439281, 0.0, 0.0, 1.0);
-	drawSphere(EARTH_RADIUS, 0.0, 0.0, 0.0);
+	drawSphere(EARTH_RADIUS);
 	drawMoon();
 	glPopMatrix();
 }
 
 void drawMoon() {
+
+	drawMoonOrbit();
+
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
-	glRotatef(23.439281, 0.0, 0.0, 1.0);
-	drawSphere(EARTH_RADIUS*0.273, 6.0, 0.0, 6.0);
+	glTranslated(MOON_MAJOR, 0.0, 0.0);
+	glRotatef(6.68, 0.0, 0.0, 1.0);
+	drawSphere(EARTH_RADIUS*0.273);
 	glPopMatrix();
 }
 
-void drawSphere(double radius, double cx, double cy, double cz) {
+void drawMoonOrbit(){
+
+	glColor3f(0.0,0.0,1.0);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+	glRotatef(5.14, 1.0, 0.0, 0.0);
+
+	double x, z;
+
+	glLineWidth(1.5);
+	glBegin(GL_LINES);
+    for(double i = 0; i <= 360; i += 0.01){
+
+		x = MOON_MAJOR * cos((PI/180)*i);
+		z = MOON_MINOR * sin((PI/180)*i);
+
+		glVertex3d(x, 0.0, z);
+
+    }
+    glEnd();
+
+    glPopMatrix();
+
+}
+
+void drawSphere(double radius) {
 	GLUquadricObj* sph = gluNewQuadric();
-	gluQuadricDrawStyle(sph, GLU_FILL);
+	gluQuadricDrawStyle(sph, GLU_LINE);
 
 	glPushMatrix();
-	glTranslatef(cx, cy, cz);
 	glRotatef(90.0, 1.0, 0.0, 0.0);
-	gluSphere(sph, radius, 100, 100);
+	gluSphere(sph, radius, 20, 20);
 	glPopMatrix();
 }
