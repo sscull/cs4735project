@@ -10,10 +10,6 @@
 
 #include "./bodies/CelestialBody.h"
 #include "./bodies/Planet.h"
-
-class Point {
-public:
-	float x, y, z;
-};
+#include "./bodies/Point.h"
 
 #endif /* UNIVERSE_H_ */

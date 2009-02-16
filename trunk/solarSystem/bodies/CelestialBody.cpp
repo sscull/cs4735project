@@ -2,37 +2,32 @@
 
 namespace solarSystem {
 
-CelestialBody::CelestialBody(float rad, float oMaj, float ex, char* n, float red, float green, float blue) {
-	radius = rad;
-	orbitMajor = oMaj;
-	e = ex;
+CelestialBody::CelestialBody(char* n, float r, float maj, float ex, float aph,
+		float per, float om, float pd, float reda, float gre, float blu) {
 	name = n;
-	r = red;
-	g = green;
-	b = blue;
+	radius = r;
+	major = maj;
+	minor = maj * sqrt(1 - pow(ex, 2));
+	float c = (aph + per) / 2.0;
+	// no orbital tilt
+	oCenter
+			= new Point(c * cos(om * M_PI / 180), c * sin(om * M_PI / 180), 0.0);
+	omega = om;
+	period = pd;
+	red = reda;
+	green = gre;
+	blue = blu;
 }
 
 CelestialBody::~CelestialBody() {
 }
 
-float CelestialBody::getRadius() const {
-	return radius;
-}
-
-float CelestialBody::getMajor() const {
-	return orbitMajor;
-}
-
-float CelestialBody::getMinor() const {
-	return orbitMajor * sqrt(1 - pow(e, 2));
+char* CelestialBody::getName() const {
+	return name;
 }
 
 void CelestialBody::addChild(const CelestialBody& c) {
 	children.push_back(c);
-}
-
-char* CelestialBody::getName() const {
-	return name;
 }
 
 CelestialBody CelestialBody::getChild(int c) const {
@@ -43,16 +38,40 @@ int CelestialBody::hasChildren() const {
 	return children.size();
 }
 
+float CelestialBody::getRadius() const {
+	return radius;
+}
+
+float CelestialBody::getMajor() const {
+	return major;
+}
+
+float CelestialBody::getMinor() const {
+	return minor;
+}
+
+Point CelestialBody::getCenter() const {
+	return *oCenter;
+}
+
+float CelestialBody::getOmega() const {
+	return omega;
+}
+
+float CelestialBody::getPeriod() const {
+	return period;
+}
+
 float CelestialBody::getRed() const {
-	return r;
+	return red;
 }
 
 float CelestialBody::getBlue() const {
-	return b;
+	return blue;
 }
 
 float CelestialBody::getGreen() const {
-	return g;
+	return green;
 }
 
 }

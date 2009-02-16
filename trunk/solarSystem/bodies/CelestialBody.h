@@ -4,6 +4,8 @@
 #include <vector>
 #include <cmath>
 
+#include "Point.h"
+
 namespace solarSystem {
 class CelestialBody;
 }
@@ -13,23 +15,32 @@ namespace solarSystem {
 class CelestialBody {
 private:
 	char* name;
-	float radius;
-	float orbitMajor;
-	float e;
 	std::vector<CelestialBody> children;
-	float r;
-	float g;
-	float b;
+	float radius;
+	float major;
+	float minor;
+	Point* oCenter; // center of elliptical orbit
+	float omega; // longitude of ascending node
+	float period;
+
+	float red;
+	float green;
+	float blue;
+
 public:
-	CelestialBody(float, float, float, char*, float, float, float);
+	CelestialBody(char*, float, float, float, float, float, float, float,
+			float, float, float);
 	virtual ~CelestialBody();
-	float getRadius() const;
-	float getMajor() const;
-	float getMinor() const;
 	char* getName() const;
 	void addChild(const CelestialBody&);
 	CelestialBody getChild(int) const;
 	int hasChildren() const;
+	float getRadius() const;
+	float getMajor() const;
+	float getMinor() const;
+	Point getCenter() const;
+	float getOmega() const;
+	float getPeriod() const;
 	float getRed() const;
 	float getGreen() const;
 	float getBlue() const;
