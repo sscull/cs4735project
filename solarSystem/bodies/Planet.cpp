@@ -2,8 +2,9 @@
 
 namespace solarSystem {
 
-Planet::Planet(float r, float oMaj, float ex, char* n, float red, float green, float blue) :
-	CelestialBody(r, oMaj, ex, n, red, green, blue) {
+Planet::Planet(char* n, float r, float maj, float ex, float aph, float per,
+		float om, float pd, float red, float gre, float blu) :
+	CelestialBody(n, r, maj, ex, aph, per, om, pd, red, gre, blu) {
 }
 
 Planet::~Planet() {

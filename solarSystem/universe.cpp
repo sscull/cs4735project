@@ -25,6 +25,7 @@ CelestialBody * sun;
 double t;
 
 int main(int argc, char **argv) {
+	std::cout << "hi" << std::endl;
 	createUniverse();
 	glutInit(&argc, argv);
 	init();
@@ -51,7 +52,7 @@ void initProjection() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(4.0, 1.0, 0.1, 1000 * AU);
-	gluLookAt(798, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+	gluLookAt(3*AU, 0.0, 0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
@@ -71,20 +72,27 @@ void initLight() {
 
 void createUniverse() {
 	t = 0.0;
-	sun = new Planet(SUN_RADIUS, 0, 0, "sun", 1.0, 1.0, 0.0);
-	CelestialBody * mercury = new Planet(MERCURY_RADIUS*10, MERCURY_MAJOR,
-	MERCURY_E, "mercury", 1.0, 1.0, 1.0);
-	CelestialBody * venus = new Planet(VENUS_RADIUS, VENUS_MAJOR, VENUS_E,
-	"venus", 1.0, 0.0, 0.0);
-	CelestialBody * earth = new Planet(EARTH_RADIUS, EARTH_MAJOR, EARTH_E,
-	"earth", 0.4, 0.4, 1.0);
-	CelestialBody * moon = new Planet(MOON_RADIUS, MOON_MAJOR, MOON_E,
-	"moon", 0.5, 0.5, 0.5);
+	sun = new Planet("sun", SUN_RADIUS, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
+			0.0);
+	CelestialBody * mercury = new Planet("mercury", MERCURY_RADIUS*50,
+	MERCURY_MAJOR, MERCURY_E, MERCURY_APH, MERCURY_PER,
+	MERCURY_OMEGA, MERCURY_P, 1.0, 1.0, 1.0);
+	CelestialBody * venus = new Planet("venus", VENUS_RADIUS*50,
+	VENUS_MAJOR, VENUS_E, VENUS_APH, VENUS_PER, VENUS_OMEGA, VENUS_P, 1.0, 1.0,
+			0.4);
+	CelestialBody * earth = new Planet("earth", EARTH_RADIUS*50,
+	EARTH_MAJOR, EARTH_E, EARTH_APH, EARTH_PER, EARTH_OMEGA, EARTH_P, 0.0, 0.0,
+			1.0);
+	CelestialBody * moon = new Planet("moon", MOON_RADIUS*50,
+	MOON_MAJOR, MOON_E, MOON_APH, MOON_PER, MOON_OMEGA, MOON_P, 0.7, 0.7, 0.7);
 	earth->addChild(*moon);
-	CelestialBody * mars = new Planet(MARS_RADIUS, MARS_MAJOR, MARS_E,
-	"mars", 1.0, 0.0, 0.0);
-	CelestialBody * jupiter = new Planet(JUPITER_RADIUS, JUPITER_MAJOR,
-			JUPITER_E, "jupiter", 1.0, 0.4, 0.4);
+
+	CelestialBody * mars = new Planet("mars", MARS_RADIUS*50,
+	MARS_MAJOR, MARS_E, MARS_APH, MARS_PER, MARS_OMEGA, MARS_P, 1.0, 0.2, 0.2);
+	CelestialBody * jupiter = new Planet("jupiter", JUPITER_RADIUS,
+	JUPITER_MAJOR, JUPITER_E, JUPITER_APH, JUPITER_PER,
+	JUPITER_OMEGA, JUPITER_P, 1.0, 0.5, 0.25);
+
 	sun->addChild(*mercury);
 	sun->addChild(*venus);
 	sun->addChild(*earth);
@@ -100,8 +108,8 @@ void display() {
 }
 
 void idle() {
-	lookAt(*sun, 798.0);
-	t += 0.01;
+	t += 10;
+	glMatrixMode(GL_MODELVIEW);
 	glutPostRedisplay();
 }
 
@@ -110,11 +118,17 @@ void drawBody(CelestialBody p) {
 	gluQuadricDrawStyle(sph, GLU_FILL);
 	glPushMatrix();
 	//drawOrbit(p);
-	glTranslated(p.getMajor(), 0, 0);
 	glColor3f(p.getRed(), p.getGreen(), p.getBlue());
-	gluSphere(sph, p.getRadius(), 100, 100);
-	std::cout << p.getName() << " " << p.getRadius() << " " << p.getMajor()
-			<< " " << p.hasChildren() << std::endl;
+	double pt = t / p.getPeriod();
+	double x = p.getCenter().x + (p.getMajor() * cos(pt * M_PI / 180.0) * cos(
+			p.getOmega() * M_PI / 180.0)) - (p.getMinor() * sin(pt * M_PI
+			/ 180.0) * sin(p.getOmega() * M_PI / 180.0));
+	double y = p.getCenter().y + (p.getMajor() * cos(pt * M_PI / 180.0) * sin(
+			p.getOmega() * M_PI / 180.0)) + (p.getMinor() * sin(pt * M_PI
+			/ 180.0) * cos(p.getOmega() * M_PI / 180.0));
+	glTranslated(x, y, 0);
+	gluSphere(sph, p.getRadius(), 10, 10);
+	std::cout << p.getName() << " " <<x <<" " <<y << std::endl;
 	if (int c = p.hasChildren()) {
 		for (int i = 0; i < c; i++) {
 			drawBody(p.getChild(i));
@@ -128,31 +142,11 @@ void drawOrbit(CelestialBody p) {
 	double x, y;
 	glColor3f(1.0, 1.0, 1.0);
 	glBegin(GL_LINE_STRIP);
-	for (double i = 0; i <= 360; i += 0.001) {
-		x = p.getMajor() * cos((M_PI/180) * i);
-		y = p.getMinor() * sin((M_PI/180) * i);
+	for (double i = 0; i <= 360.0; i += 0.001) {
+		x = p.getMajor() * cos((M_PI / 180.0) * i);
+		y = p.getMinor() * sin((M_PI / 180.0) * i);
 		glVertex3d(x, y, 0);
 	}
 	glEnd();
 	glPopMatrix();
-}
-
-void lookAt(CelestialBody p, double distance) {
-	Point point = getPos(p);
-	double x = point.x;
-	double y = point.y;
-	double z = point.z;
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glRotated(t*M_PI/180, 0.0, 0.0, 1.0);
-	glTranslated(distance, 0.0, 0.0);
-	glPopMatrix();
-}
-
-Point getPos(CelestialBody p) {
-	Point point;
-	point.x = p.getMajor();
-	point.y = 0;
-	point.z = 0;
-	return point;
 }

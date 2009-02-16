@@ -18,7 +18,8 @@ namespace solarSystem {
 
 class Planet: public CelestialBody {
 public:
-	Planet(float, float, float, char*, float, float, float);
+	Planet(char*, float, float, float, float, float, float, float, float,
+			float, float);
 	virtual ~Planet();
 };
 
