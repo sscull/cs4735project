@@ -11,7 +11,8 @@ CelestialBody::CelestialBody(char* n, float r, float maj, float ex, float aph,
 	float c = (aph + per) / 2.0;
 	// no orbital tilt
 	oCenter
-			= new Point(c * cos(om * M_PI / 180), c * sin(om * M_PI / 180), 0.0);
+	//	= new Point(c * cos(om * M_PI / 180), c * sin(om * M_PI / 180), 0.0);
+			= new Point(0.0, 0.0, 0.0);
 	omega = om;
 	period = pd;
 	red = reda;
@@ -52,6 +53,12 @@ float CelestialBody::getMinor() const {
 
 Point CelestialBody::getCenter() const {
 	return *oCenter;
+}
+
+void CelestialBody::setCenter(Point c) {
+	oCenter->x = c.x;
+	oCenter->y = c.y;
+	oCenter->z = c.z;
 }
 
 float CelestialBody::getOmega() const {

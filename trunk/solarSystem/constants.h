@@ -1,8 +1,7 @@
 #define AU 152.097701 // units in millions of km
 #define YEAR 365.25
-#define SCALE 1
 
-#define EARTH_RADIUS 0.006371*SCALE
+#define EARTH_RADIUS 0.006371
 #define EARTH_MAJOR 1.0000001124*AU
 #define EARTH_E 0.016710219
 #define EARTH_OTILT 1.5786944*AU
