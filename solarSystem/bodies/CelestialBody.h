@@ -39,6 +39,7 @@ public:
 	float getMajor() const;
 	float getMinor() const;
 	Point getCenter() const;
+	void setCenter(Point);
 	float getOmega() const;
 	float getPeriod() const;
 	float getRed() const;
