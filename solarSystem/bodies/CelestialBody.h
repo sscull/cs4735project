@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cmath>
+#include <string>
 
 #include "Point.h"
 
@@ -14,7 +15,7 @@ namespace solarSystem {
 
 class CelestialBody {
 private:
-	char* name;
+	std::string name;
 	std::vector<CelestialBody> children;
 	float radius;
 	float major;
@@ -28,10 +29,10 @@ private:
 	float blue;
 
 public:
-	CelestialBody(char*, float, float, float, float, float, float, float,
+	CelestialBody(std::string, float, float, float, float, float, float, float,
 			float, float, float);
 	virtual ~CelestialBody();
-	char* getName() const;
+	std::string getName() const;
 	void addChild(const CelestialBody&);
 	CelestialBody getChild(int) const;
 	int hasChildren() const;

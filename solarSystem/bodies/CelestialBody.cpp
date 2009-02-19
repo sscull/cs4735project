@@ -2,17 +2,16 @@
 
 namespace solarSystem {
 
-CelestialBody::CelestialBody(char* n, float r, float maj, float ex, float aph,
+CelestialBody::CelestialBody(std::string n, float r, float maj, float ex, float aph,
 		float per, float om, float pd, float reda, float gre, float blu) {
 	name = n;
 	radius = r;
 	major = maj;
 	minor = maj * sqrt(1 - pow(ex, 2));
-	float c = (aph + per) / 2.0;
+	float c = (aph - per) / 2.0;
 	// no orbital tilt
 	oCenter
-	//	= new Point(c * cos(om * M_PI / 180), c * sin(om * M_PI / 180), 0.0);
-			= new Point(0.0, 0.0, 0.0);
+			= new Point(c * cos(om * M_PI / 180), c * sin(om * M_PI / 180), 0.0);
 	omega = om;
 	period = pd;
 	red = reda;
@@ -23,7 +22,7 @@ CelestialBody::CelestialBody(char* n, float r, float maj, float ex, float aph,
 CelestialBody::~CelestialBody() {
 }
 
-char* CelestialBody::getName() const {
+std::string CelestialBody::getName() const {
 	return name;
 }
 
