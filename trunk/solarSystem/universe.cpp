@@ -21,17 +21,18 @@ void printCenter(CelestialBody);
 
 CelestialBody * sun;
 double t;
+GLfloat yellow[] = { 1.0, 1.0, 0.0, 1.0 };
+GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
+GLfloat black[] = { 0.0, 0.0, 0.0, 1.0 };
 
 int main(int argc, char **argv) {
-	createUniverse();
 	glutInit(&argc, argv);
 	init();
 
 	glutDisplayFunc(display);
 	glutIdleFunc(idle);
 
-	initProjection();
-	initLight();
+	createUniverse();
 
 	glutMainLoop();
 	return 0;
@@ -43,14 +44,16 @@ void init() {
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("Universe");
 	glClearColor(0.0, 0.0, 0.0, 1.0);
+	initProjection();
+	initLight();
 }
 
 void initProjection() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(4.0, 1.0, 0.1, 1000 * AU);
+	gluPerspective(4.0, 1, 0.1, 1000 * AU);
 	//gluLookAt(150.661699928, -29.99, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0); //earth
-	gluLookAt(3 * AU, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+	gluLookAt(0.0, 155, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
@@ -59,12 +62,13 @@ void initLight() {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_COLOR_MATERIAL);
-	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+	GLfloat pos[] = { 0.0, 0.0, 0.0 };
 
 	glEnable(GL_LIGHT0);
-	GLfloat diffColor[] = { 1.0, 1.0, 1.0, 1.0 };
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffColor);
-	GLfloat pos[] = { 800.0, 0.0, 0.0, 1.0 };
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, black);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, white);
 	glLightfv(GL_LIGHT0, GL_POSITION, pos);
 }
 
@@ -73,12 +77,12 @@ void createUniverse() {
 	sun = new Planet("sun", SUN_RADIUS, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
 			0.0);
 	CelestialBody * mercury = new Planet("mercury", MERCURY_RADIUS,
-	MERCURY_MAJOR, MERCURY_E, MERCURY_APH, MERCURY_PER,
-	MERCURY_OMEGA, MERCURY_P, 1.0, 1.0, 1.0);
+			MERCURY_MAJOR, MERCURY_E, MERCURY_APH, MERCURY_PER,
+			MERCURY_OMEGA, MERCURY_P, 1.0, 1.0, 1.0);
 	CelestialBody * venus = new Planet("venus", VENUS_RADIUS, VENUS_MAJOR,
-			VENUS_E, VENUS_APH, VENUS_PER, VENUS_OMEGA, VENUS_P, 1.0, 1.0, 0.4);
+	VENUS_E, VENUS_APH, VENUS_PER, VENUS_OMEGA, VENUS_P, 1.0, 1.0, 0.4);
 	CelestialBody * earth = new Planet("earth", EARTH_RADIUS, EARTH_MAJOR,
-			EARTH_E, EARTH_APH, EARTH_PER, EARTH_OMEGA, EARTH_P, 0.0, 0.0, 1.0);
+	EARTH_E, EARTH_APH, EARTH_PER, EARTH_OMEGA, EARTH_P, 0.0, 0.0, 1.0);
 	CelestialBody * moon = new Planet("moon", MOON_RADIUS, MOON_MAJOR, MOON_E,
 	MOON_APH, MOON_PER, MOON_OMEGA, MOON_P, 0.7, 0.7, 0.7);
 	earth->addChild(*moon);
@@ -105,7 +109,6 @@ void printCenter(CelestialBody p) {
 			printCenter(p.getChild(i));
 		}
 	}
-	glPopMatrix();
 }
 
 void display() {
@@ -116,16 +119,22 @@ void display() {
 }
 
 void idle() {
-	t += 1;
+	t += 5;
 	glMatrixMode(GL_MODELVIEW);
 	glutPostRedisplay();
 }
 
 void drawBody(CelestialBody p) {
-	GLUquadricObj* sph = gluNewQuadric();
-	gluQuadricDrawStyle(sph, GLU_FILL);
 	glPushMatrix();
-	glColor3f(p.getRed(), p.getGreen(), p.getBlue());
+	GLfloat color[] = { p.getRed(), p.getGreen(), p.getBlue() };
+	glColor3f(color[0], color[1], color[2]);
+	if (p.getName() == "sun") {
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, black);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, color);
+	} else {
+		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
+	}
 	double pt = t / p.getPeriod();
 	double x = p.getCenter().x + (p.getMajor() * cos(pt * M_PI / 180.0) * cos(
 			p.getOmega() * M_PI / 180.0)) - (p.getMinor() * sin(pt * M_PI
@@ -134,8 +143,18 @@ void drawBody(CelestialBody p) {
 			p.getOmega() * M_PI / 180.0)) + (p.getMinor() * sin(pt * M_PI
 			/ 180.0) * cos(p.getOmega() * M_PI / 180.0));
 	glTranslated(x, y, 0);
-	gluSphere(sph, p.getRadius(), 10, 10);
-	std::cout << p.getName() << " x:" << x << " y:" << y << std::endl;
+	glutSolidSphere(p.getRadius(), 100, 100);
+	if (p.getName() == "earth") {
+		std::cout << p.getName() << " x:" << x << " y:" << y << std::endl;
+		glPushMatrix();
+		glMatrixMode(GL_PROJECTION);
+		//gluLookAt(AU, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		glMatrixMode(GL_MODELVIEW);
+		glPopMatrix();
+	} else if (p.getName() == "moon") {
+		std::cout << p.getName() << " x:" << p.getCenter().x << " y:"
+				<< p.getCenter().y << std::endl;
+	}
 	if (int c = p.hasChildren()) {
 		for (int i = 0; i < c; i++) {
 			Point* newCenter = new Point(x, y, 0.0);
