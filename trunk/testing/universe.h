@@ -7,6 +7,10 @@
 
 #ifndef UNIVERSE_H_
 #define UNIVERSE_H_
+#include <GL/glut.h>
+#include <iostream>
+#include <stdlib.h>
+#include <cmath>
 
 #include "./bodies/CelestialBody.h"
 #include "./bodies/Planet.h"

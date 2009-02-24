@@ -1,10 +1,4 @@
-#include <GL/glut.h>
-#include <iostream>
-#include <stdlib.h>
-#include <cmath>
-
 #include "./universe.h"
-
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
 
@@ -55,29 +49,36 @@ void init() {
 	GLfloat pos[] = { 0.0, 0.0, 0.0 };
 
 	glEnable(GL_LIGHT0);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, white);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, black);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, white);
 	glLightfv(GL_LIGHT0, GL_POSITION, pos);
+
+	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+
 }
 
 void createUniverse() {
 	t = 0.0;
 	test = new Planet("test", 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0);
-	CelestialBody * child1 = new Planet("child1", 0.5, 5.0, 0.5, 1.0, 1.0, 180.0,
-			1.0, 0.0, 1.0, 1.0);
+	CelestialBody * child1 = new Planet("child1", 0.5, 5.0, 0.5, 1.0, 1.0,
+			180.0, 1.0, 0.0, 1.0, 1.0);
 	CelestialBody * child11 = new Planet("child11", 0.25, 1.0, 0.0, 1.0, 1.0,
 			0.0, 0.5, 1.0, 0.0, 0.0);
-	child1->addChild(*child11);
+	//child1->addChild(*child11);
 
-	CelestialBody * child2 = new Planet("child2", 0.5, 5.0, 0.5, 1.0, 1.0, 180.0,
-				1.0, 0.0, 1.0, 1.0);
-	CelestialBody * child21 = new Planet("child21", 0.5, 5.0, 0.5, 1.0, 1.0, 180.0,
-				1.0, 0.0, 1.0, 1.0);
-	CelestialBody * child22 = new Planet("child22", 0.5, 5.0, 0.5, 1.0, 1.0, 180.0,
-				1.0, 0.0, 1.0, 1.0);
+	CelestialBody * child2 = new Planet("child2", 0.5, 10.0, 0.5, 1.0, 1.0,
+			180.0, 2.0, 0.0, 1.0, 0.0);
+	CelestialBody * child21 = new Planet("child21", 0.15, 1.0, 0.5, 1.0, 1.0,
+			180.0, 0.5, 0.0, 1.0, 1.0);
+	CelestialBody * child22 = new Planet("child22", 0.25, 2.0, 0.5, 1.0, 1.0,
+			180.0, 5.0, 1.0, 0.0, 1.0);
+	child2->addChild(*child21);
+	child2->addChild(*child22);
 
 	test->addChild(*child1);
+	//test->addChild(*child2);
 }
 
 void display() {
@@ -88,13 +89,18 @@ void display() {
 }
 
 void idle() {
-	t += 1.0;
+	t += 0.5;
 	glMatrixMode(GL_MODELVIEW);
 	glutPostRedisplay();
 }
 
 void drawBody(CelestialBody p) {
 	glPushMatrix();
+
+	GLUquadricObj * sph = gluNewQuadric();
+	gluQuadricNormals(sph, GLU_SMOOTH);
+	gluQuadricTexture(sph, GL_TRUE);
+
 	double pt = t / p.getPeriod();
 	double x = p.getCenter().x + (p.getMajor() * cos(pt * M_PI / 180.0) * cos(
 			p.getOmega() * M_PI / 180.0)) - (p.getMinor() * sin(pt * M_PI
@@ -103,17 +109,17 @@ void drawBody(CelestialBody p) {
 			p.getOmega() * M_PI / 180.0)) + (p.getMinor() * sin(pt * M_PI
 			/ 180.0) * cos(p.getOmega() * M_PI / 180.0));
 	glTranslated(x, y, 0);
+
 	glColor3f(p.getRed(), p.getGreen(), p.getBlue());
 	GLfloat color[] = { p.getRed(), p.getGreen(), p.getBlue() };
-	GLfloat blank[] = { 0.0, 0.0, 0.0, 1.0 };
 	if (p.getName() == "test") {
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, blank);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, black);
 		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, color);
 	} else {
-		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, blank);
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color);
 	}
-	glutSolidSphere(p.getRadius(), 100, 100);
+	gluSphere(sph, p.getRadius(), 100, 100);
 	if (int c = p.hasChildren()) {
 		for (int i = 0; i < c; i++) {
 			drawBody(p.getChild(i));
