@@ -45,8 +45,8 @@ double dot(Vector s, Vector t){
 	return s.x * t.x + s.y * t.y + s.z * t.z;
 }
 
-Vector* cross(Vector s, Vector t){
+Vector cross(Vector s, Vector t){
 	Vector * c = new Vector(s.y*t.z - s.z*t.y, s.z*t.x - s.x*t.z, s.x*t.y - s.y*t.x);
-	return c;
+	return *c;
 }
 
