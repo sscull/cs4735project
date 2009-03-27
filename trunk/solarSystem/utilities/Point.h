@@ -11,11 +11,14 @@
 class Point {
 public:
 	Point();
-	Point(float, float, float);
+	Point(double, double, double);
+	void set(double, double, double);
+	void set(Point);
+	void buildTuple(double []);
 	virtual ~Point();
-	float x;
-	float y;
-	float z;
+	double x;
+	double y;
+	double z;
 };
 
 #endif /* POINT_H_ */
