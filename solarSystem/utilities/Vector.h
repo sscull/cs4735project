@@ -8,8 +8,8 @@
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
-#include<cmath>
-#include"Point.h"
+#include <cmath>
+#include "Point.h"
 
 class Vector {
 public:
@@ -17,7 +17,6 @@ public:
 	Vector(double, double, double);
 	void set(double, double, double);
 	void set(Vector);
-	void invert();
 	void setByDiff(Point, Point);
 	void normalize();
 	virtual ~Vector();
@@ -28,5 +27,7 @@ public:
 
 double dot(Vector, Vector);
 Vector cross(Vector, Vector);
+Vector invert(Vector);
+Point moveAlong(Point, Vector);
 
 #endif /* VECTOR_H_ */

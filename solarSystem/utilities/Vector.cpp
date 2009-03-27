@@ -5,7 +5,7 @@
  *      Author: brad
  */
 
-#include "Vector.h" //FINISH THIS
+#include "Vector.h"
 
 Vector::Vector() {
 	x = 0.0; y = 0.0; z = 0.0;
@@ -23,10 +23,6 @@ void Vector::set(Vector v){
 	x = v.x; y = v.y; z = v.z;
 }
 
-void Vector::invert(){
-	x = -x; y = -y; z = -z;
-}
-
 void Vector::setByDiff(Point a, Point b){
 	x = a.x - b.x; y = a.y - b.y; z = a.z - b.z;
 }
@@ -41,6 +37,11 @@ void Vector::normalize(){
 Vector::~Vector() {
 }
 
+Vector invert(Vector v){
+	Vector r(-v.x, -v.y, -v.z);
+	return r;
+}
+
 double dot(Vector s, Vector t){
 	return s.x * t.x + s.y * t.y + s.z * t.z;
 }
@@ -50,3 +51,7 @@ Vector cross(Vector s, Vector t){
 	return *c;
 }
 
+Point moveAlong(Point o, Vector d){
+	Point r(o.x + d.x, o.y + d.y, o.z + d.z);
+	return r;
+}
