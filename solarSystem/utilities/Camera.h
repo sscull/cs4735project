@@ -8,8 +8,6 @@
 #ifndef CAMERA_H_
 #define CAMERA_H_
 
-namespace solarSystem{
-
 #include "Point.h"
 #include "Vector.h"
 
@@ -30,7 +28,5 @@ public:
 	void translate(double, double, double);
 	virtual ~Camera();
 };
-
-}
 
 #endif /* CAMERA_H_ */
