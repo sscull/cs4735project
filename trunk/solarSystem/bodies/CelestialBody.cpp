@@ -11,7 +11,7 @@ CelestialBody::CelestialBody(std::string n, float r, float maj, float ex, float 
 	float c = (aph - per) / 2.0;
 	// no orbital tilt
 	oCenter
-			= new Point(c * cos(om * M_PI / 180), c * sin(om * M_PI / 180), 0.0);
+			= new Point(c * cos(om * M_PI / 180), 0.0, c * sin(om * M_PI / 180));
 	omega = om;
 	period = pd;
 	red = reda;

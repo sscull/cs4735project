@@ -348,10 +348,10 @@ void drawBody(CelestialBody p) {
 	double x = p.getCenter().x + (p.getMajor() * cos(pt * M_PI / 180.0) * cos(
 			p.getOmega() * M_PI / 180.0)) - (p.getMinor() * sin(pt * M_PI
 			/ 180.0) * sin(p.getOmega() * M_PI / 180.0));
-	double z = p.getCenter().z + (p.getMajor() * cos(pt * M_PI / 180.0) * sin(
+	double y = p.getCenter().y + (p.getMajor() * cos(pt * M_PI / 180.0) * sin(
 			p.getOmega() * M_PI / 180.0)) + (p.getMinor() * sin(pt * M_PI
 			/ 180.0) * cos(p.getOmega() * M_PI / 180.0));
-	glTranslated(x, 0, z);
+	glTranslated(x, y, 0);
 	glColor3f(p.getRed(), p.getGreen(), p.getBlue());
 	GLfloat color[] = { p.getRed(), p.getGreen(), p.getBlue() };
 	GLfloat blank[] = { 0.0, 0.0, 0.0, 1.0 };
