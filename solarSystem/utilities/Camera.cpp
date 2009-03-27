@@ -21,6 +21,7 @@ void Camera::set(Point newEye, Point lookAt, Vector up){
 	u.set(cross(up, n));
 	u.normalize();
 	v.set(cross(n, v));
+	v.normalize();
 }
 
 Vector Camera::getU(void){
