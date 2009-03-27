@@ -4,8 +4,8 @@
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
 #define BPP 24
-#define MOVE_SPEED 0.002
-#define MOUSE_SENSITIVITY 0.003
+#define MOVE_SPEED 0.01
+#define MOUSE_SENSITIVITY 0.0003
 
 using namespace solarSystem;
 void mainLoop();
@@ -93,7 +93,7 @@ void initDisplay(int& argc, char** argv) {
 
 	reshape(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	SDL_WM_SetCaption("Teapot", "Teapot");
+	SDL_WM_SetCaption("Solar System Sim", "Solar System Sim");
 
 	mouseCap = true;
 	SDL_WM_GrabInput(SDL_GRAB_ON);
@@ -114,6 +114,12 @@ void init() {
 	glLightfv(GL_LIGHT0, GL_AMBIENT, black);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, white);
 	glLightfv(GL_LIGHT0, GL_POSITION, pos);
+
+	Point eye(5, 0, 0);
+	Point lookAt(0, 0, 0);
+	Vector up(0, 1, 0);
+
+	camera.set(eye, lookAt, up);
 }
 
 void mainLoop() {
@@ -147,30 +153,30 @@ void mainLoop() {
 			}
 		}
 
-		Vector move(0, 0, 0);
+		double du = 0, dv = 0, dn = 0;
 		if (forward)
-			move.z -= 1;
+			dn -= MOVE_SPEED;
 		if (backward)
-			move.z += 1;
+			dn += MOVE_SPEED;
 		if (left)
-			move.x -= 1;
+			du -= MOVE_SPEED;
 		if (right)
-			move.x += 1;
+			du += MOVE_SPEED;
 		/*if (ccw)
 		 camera.incRoll(-MOVE_SPEED);
 		 if (cw)
 		 camera.incRoll(MOVE_SPEED);*/
 		if (up)
-			move.y += 1;
+			dv += MOVE_SPEED;
 		if (down)
-			move.y -= 1;
+			dv -= MOVE_SPEED;
 		/*if (zin)
 		 camera.incFov(-0.001);
 		 if (zout)
 		 camera.incFov(0.001);*/
 
-		camera.translate(move.x * MOVE_SPEED, move.y * MOVE_SPEED, move.z
-				* MOVE_SPEED);
+		camera.translate(du, dv, dn);
+
 		t += 0.1;
 		display();
 		SDL_GL_SwapBuffers();
@@ -249,7 +255,7 @@ void keyUp(SDL_keysym *keysym) {
 	case SDLK_SPACE:
 		up = false;
 		break;
-	case SDLK_LSHIFT:
+	case SDLK_LCTRL:
 		down = false;
 		break;
 	default:
@@ -258,8 +264,8 @@ void keyUp(SDL_keysym *keysym) {
 }
 
 void mouseMotion(SDL_MouseMotionEvent *m) {
-	camera.pitch((double) m->yrel * MOUSE_SENSITIVITY);
-	camera.yaw((double) m->xrel * MOUSE_SENSITIVITY);
+//	camera.pitch((double) m->yrel * MOUSE_SENSITIVITY);
+//	camera.yaw((double) m->xrel * MOUSE_SENSITIVITY);
 }
 
 void reshape(int x, int y) {
@@ -342,10 +348,10 @@ void drawBody(CelestialBody p) {
 	double x = p.getCenter().x + (p.getMajor() * cos(pt * M_PI / 180.0) * cos(
 			p.getOmega() * M_PI / 180.0)) - (p.getMinor() * sin(pt * M_PI
 			/ 180.0) * sin(p.getOmega() * M_PI / 180.0));
-	double y = p.getCenter().y + (p.getMajor() * cos(pt * M_PI / 180.0) * sin(
+	double z = p.getCenter().z + (p.getMajor() * cos(pt * M_PI / 180.0) * sin(
 			p.getOmega() * M_PI / 180.0)) + (p.getMinor() * sin(pt * M_PI
 			/ 180.0) * cos(p.getOmega() * M_PI / 180.0));
-	glTranslated(x, y, 0);
+	glTranslated(x, 0, z);
 	glColor3f(p.getRed(), p.getGreen(), p.getBlue());
 	GLfloat color[] = { p.getRed(), p.getGreen(), p.getBlue() };
 	GLfloat blank[] = { 0.0, 0.0, 0.0, 1.0 };

@@ -16,7 +16,7 @@ Camera::Camera() {
 
 void Camera::set(Point newEye, Point lookAt, Vector up){
 	eye.set(newEye);
-	n.setByDiff(lookAt, newEye);
+	n.setByDiff(newEye, lookAt);
 	n.normalize();
 	u.set(cross(up, n));
 	u.normalize();
@@ -41,8 +41,8 @@ Point Camera::getEye(void){
 }
 
 void Camera::roll(double angle){
-	double cosAng = cos(M_PI/180.0*angle);
-	double sinAng = sin(M_PI/180.0*angle);
+	double cosAng = cos(angle);
+	double sinAng = sin(angle);
 
 	Vector t(u);
 	u.set(cosAng * t.x - sinAng * v.x, cosAng * t.y - sinAng * v.y, cosAng * t.z - sinAng * v.z);
@@ -50,8 +50,8 @@ void Camera::roll(double angle){
 }
 
 void Camera::pitch(double angle){
-	double cosAng = cos(M_PI/180.0*angle);
-	double sinAng = sin(M_PI/180.0*angle);
+	double cosAng = cos(angle);
+	double sinAng = sin(angle);
 
 	Vector t(v);
 	v.set(cosAng * t.x - sinAng * n.x, cosAng * t.y - sinAng * n.y, cosAng * t.z - sinAng * n.z);
@@ -59,8 +59,8 @@ void Camera::pitch(double angle){
 }
 
 void Camera::yaw(double angle){
-	double cosAng = cos(M_PI/180.0*angle);
-	double sinAng = sin(M_PI/180.0*angle);
+	double cosAng = cos(angle);
+	double sinAng = sin(angle);
 
 	Vector t(n);
 	n.set(cosAng * t.x - sinAng * u.x, cosAng * t.y - sinAng * u.y, cosAng * t.z - sinAng * u.z);
