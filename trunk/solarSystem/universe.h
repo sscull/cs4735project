@@ -8,8 +8,15 @@
 #ifndef UNIVERSE_H_
 #define UNIVERSE_H_
 
+#include <GL/glut.h>
+#include <SDL/SDL.h>
+#include <iostream>
+#include <cmath>
+
 #include "./bodies/CelestialBody.h"
 #include "./bodies/Planet.h"
-#include "./bodies/Point.h"
+#include "./utilities/Point.h"
+#include "./utilities/Vector.h"
+#include "./utilities/Camera.h"
 
 #endif /* UNIVERSE_H_ */

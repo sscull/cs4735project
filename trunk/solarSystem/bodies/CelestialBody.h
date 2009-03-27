@@ -5,7 +5,7 @@
 #include <cmath>
 #include <string>
 
-#include "Point.h"
+#include "../utilities/Point.h"
 
 namespace solarSystem {
 class CelestialBody;
