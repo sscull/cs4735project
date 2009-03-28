@@ -178,6 +178,7 @@ void mainLoop() {
 		camera.translate(du, dv, dn);
 
 		t += 0.1;
+
 		display();
 		SDL_GL_SwapBuffers();
 	}
@@ -264,8 +265,8 @@ void keyUp(SDL_keysym *keysym) {
 }
 
 void mouseMotion(SDL_MouseMotionEvent *m) {
-//	camera.pitch((double) m->yrel * MOUSE_SENSITIVITY);
-//	camera.yaw((double) m->xrel * MOUSE_SENSITIVITY);
+	camera.pitch((double) m->yrel * MOUSE_SENSITIVITY);
+	camera.yaw((double) m->xrel * MOUSE_SENSITIVITY);
 }
 
 void reshape(int x, int y) {

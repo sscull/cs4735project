@@ -46,7 +46,7 @@ void Camera::roll(double angle){
 
 	Vector t(u);
 	u.set(cosAng * t.x - sinAng * v.x, cosAng * t.y - sinAng * v.y, cosAng * t.z - sinAng * v.z);
-	v.set(sinAng * t.x + cosAng * v.x, sinAng * t.y + cosAng * v.y, sinAng * t.z + sinAng * v.z);
+	v.set(sinAng * t.x + cosAng * v.x, sinAng * t.y + cosAng * v.y, sinAng * t.z + cosAng * v.z);
 }
 
 void Camera::pitch(double angle){
@@ -55,7 +55,7 @@ void Camera::pitch(double angle){
 
 	Vector t(v);
 	v.set(cosAng * t.x - sinAng * n.x, cosAng * t.y - sinAng * n.y, cosAng * t.z - sinAng * n.z);
-	n.set(sinAng * t.x + cosAng * n.x, sinAng * t.y + cosAng * n.y, sinAng * t.z + sinAng * n.z);
+	n.set(sinAng * t.x + cosAng * n.x, sinAng * t.y + cosAng * n.y, sinAng * t.z + cosAng * n.z);
 }
 
 void Camera::yaw(double angle){
@@ -64,7 +64,7 @@ void Camera::yaw(double angle){
 
 	Vector t(n);
 	n.set(cosAng * t.x - sinAng * u.x, cosAng * t.y - sinAng * u.y, cosAng * t.z - sinAng * u.z);
-	u.set(sinAng * t.x + cosAng * u.x, sinAng * t.y + cosAng * u.y, sinAng * t.z + sinAng * u.z);
+	u.set(sinAng * t.x + cosAng * u.x, sinAng * t.y + cosAng * u.y, sinAng * t.z + cosAng * u.z);
 }
 
 void Camera::translate(double du, double dv, double dn){
