@@ -8,7 +8,8 @@
 #ifndef UNIVERSE_H_
 #define UNIVERSE_H_
 
-#include <GL/glut.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <SDL/SDL.h>
 #include <iostream>
 #include <cmath>
@@ -18,5 +19,6 @@
 #include "./utilities/Point.h"
 #include "./utilities/Vector.h"
 #include "./utilities/Camera.h"
+#include "./utilities/Image.h"
 
 #endif /* UNIVERSE_H_ */

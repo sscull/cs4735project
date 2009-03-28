@@ -29,8 +29,7 @@ private:
 	float blue;
 
 public:
-	CelestialBody(std::string, float, float, float, float, float, float, float,
-			float, float, float);
+	CelestialBody(std::string, float, float, float, float, float, float, float);
 	virtual ~CelestialBody();
 	std::string getName() const;
 	void addChild(const CelestialBody&);
@@ -43,9 +42,6 @@ public:
 	void setCenter(Point);
 	float getOmega() const;
 	float getPeriod() const;
-	float getRed() const;
-	float getGreen() const;
-	float getBlue() const;
 };
 
 }
