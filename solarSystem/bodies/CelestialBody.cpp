@@ -2,8 +2,8 @@
 
 namespace solarSystem {
 
-CelestialBody::CelestialBody(std::string n, float r, float maj, float ex, float aph,
-		float per, float om, float pd, float reda, float gre, float blu) {
+CelestialBody::CelestialBody(std::string n, float r, float maj, float ex,
+		float aph, float per, float om, float pd) {
 	name = n;
 	radius = r;
 	major = maj;
@@ -14,9 +14,6 @@ CelestialBody::CelestialBody(std::string n, float r, float maj, float ex, float 
 			= new Point(c * cos(om * M_PI / 180), 0.0, c * sin(om * M_PI / 180));
 	omega = om;
 	period = pd;
-	red = reda;
-	green = gre;
-	blue = blu;
 }
 
 CelestialBody::~CelestialBody() {
@@ -66,18 +63,6 @@ float CelestialBody::getOmega() const {
 
 float CelestialBody::getPeriod() const {
 	return period;
-}
-
-float CelestialBody::getRed() const {
-	return red;
-}
-
-float CelestialBody::getBlue() const {
-	return blue;
-}
-
-float CelestialBody::getGreen() const {
-	return green;
 }
 
 }

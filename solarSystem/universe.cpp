@@ -39,7 +39,6 @@ GLfloat black[] = { 0.0, 0.0, 0.0, 1.0 };
 int main(int argc, char **argv) {
 	initDisplay(argc, argv);
 	init();
-	glutInit(&argc, argv);
 
 	//createUniverse();
 	createTest();
@@ -102,6 +101,7 @@ void initDisplay(int& argc, char** argv) {
 
 void init() {
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_NORMALIZE);
 
@@ -292,24 +292,34 @@ void display() {
 
 void createUniverse() {
 	t = 0.0;
-	sun = new Planet("sun", SUN_RADIUS, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
-			0.0);
+
+	Image* texture = new Image();
+	texture->readFile("./textures/earth.bmp");
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	sun = new Planet("sun", SUN_RADIUS, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 	CelestialBody * mercury = new Planet("mercury", MERCURY_RADIUS*50,
 			MERCURY_MAJOR, MERCURY_E, MERCURY_APH, MERCURY_PER,
-			MERCURY_OMEGA, MERCURY_P, 1.0, 1.0, 1.0);
+			MERCURY_OMEGA, MERCURY_P);
 	CelestialBody * venus = new Planet("venus", VENUS_RADIUS*50, VENUS_MAJOR,
-	VENUS_E, VENUS_APH, VENUS_PER, VENUS_OMEGA, VENUS_P, 1.0, 1.0, 0.4);
+	VENUS_E, VENUS_APH, VENUS_PER, VENUS_OMEGA, VENUS_P);
 	CelestialBody * earth = new Planet("earth", EARTH_RADIUS*50, EARTH_MAJOR,
-	EARTH_E, EARTH_APH, EARTH_PER, EARTH_OMEGA, EARTH_P, 0.0, 0.0, 1.0);
+	EARTH_E, EARTH_APH, EARTH_PER, EARTH_OMEGA, EARTH_P);
 	CelestialBody * moon = new Planet("moon", MOON_RADIUS, MOON_MAJOR, MOON_E,
-	MOON_APH, MOON_PER, MOON_OMEGA, MOON_P, 0.7, 0.7, 0.7);
+	MOON_APH, MOON_PER, MOON_OMEGA, MOON_P);
 	earth->addChild(*moon);
 
 	CelestialBody * mars = new Planet("mars", MARS_RADIUS, MARS_MAJOR, MARS_E,
-	MARS_APH, MARS_PER, MARS_OMEGA, MARS_P, 1.0, 0.2, 0.2);
+	MARS_APH, MARS_PER, MARS_OMEGA, MARS_P);
 	CelestialBody * jupiter = new Planet("jupiter", JUPITER_RADIUS,
 	JUPITER_MAJOR, JUPITER_E, JUPITER_APH, JUPITER_PER,
-	JUPITER_OMEGA, JUPITER_P, 1.0, 0.5, 0.25);
+	JUPITER_OMEGA, JUPITER_P);
 
 	sun->addChild(*mercury);
 	sun->addChild(*venus);
@@ -320,19 +330,30 @@ void createUniverse() {
 
 void createTest() {
 	t = 0.0;
-	sun = new Planet("sun", 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0);
+
+	Image* texture = new Image();
+	texture->readFile("./textures/earth.bmp");
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	sun = new Planet("sun", 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 	CelestialBody * child1 = new Planet("child1", 0.5, 5.0, 0.5, 1.0, 1.0,
-			180.0, 1.0, 0.0, 1.0, 1.0);
+			180.0, 1.0);
 	CelestialBody * child11 = new Planet("child11", 0.25, 1.0, 0.0, 1.0, 1.0,
-			0.0, 0.5, 1.0, 0.0, 0.0);
+			0.0, 0.5);
 	child1->addChild(*child11);
 
 	CelestialBody * child2 = new Planet("child2", 0.5, 9.0, 0.01, 1.0, 1.0,
-			180.0, 2.0, 0.0, 1.0, 0.0);
+			180.0, 2.0);
 	CelestialBody * child21 = new Planet("child21", 0.25, 1.0, 0.5, 1.0, 1.0,
-			180.0, 0.1, 1.0, 0.0, 1.0);
+			180.0, 0.1);
 	CelestialBody * child22 = new Planet("child22", 0.33, 1.75, 0.5, 1.0, 1.0,
-			180.0, 0.2, 0.0, 0.0, 1.0);
+			180.0, 0.2);
 	child2->addChild(*child21);
 	child2->addChild(*child22);
 
@@ -353,15 +374,8 @@ void drawBody(CelestialBody p) {
 			p.getOmega() * M_PI / 180.0)) + (p.getMinor() * sin(pt * M_PI
 			/ 180.0) * cos(p.getOmega() * M_PI / 180.0));
 	glTranslated(x, y, 0);
-	glColor3f(p.getRed(), p.getGreen(), p.getBlue());
-	GLfloat color[] = { p.getRed(), p.getGreen(), p.getBlue() };
-	GLfloat blank[] = { 0.0, 0.0, 0.0, 1.0 };
-	if (p.getName() == "sun") {
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, blank);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, color);
-	} else {
-		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, blank);
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, color);
+	if (p.getName() != "sun") {
+		glBindTexture(GL_TEXTURE_2D,0);
 	}
 	gluSphere(sph, p.getRadius(), 100, 100);
 	if (int c = p.hasChildren()) {
