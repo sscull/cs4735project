@@ -14,9 +14,10 @@ Camera::Camera() {
 	u.set(1.0, 0.0, 0.0);
 	v.set(0.0, 1.0, 0.0);
 	n.set(0.0, 0.0, 1.0);
+	fov = 90;
 }
 
-void Camera::set(Point newEye, Point lookAt, Vector up){
+void Camera::set(Point newEye, Point lookAt, Vector up, double newfov){
 	eye.set(newEye);
 	n.setByDiff(newEye, lookAt);
 	n.normalize();
@@ -24,6 +25,7 @@ void Camera::set(Point newEye, Point lookAt, Vector up){
 	u.normalize();
 	v.set(cross(n, u));
 	v.normalize();
+	fov = newfov;
 }
 
 Vector Camera::getU(void){
@@ -40,6 +42,10 @@ Vector Camera::getN(void){
 
 Point Camera::getEye(void){
 	return eye;
+}
+
+double Camera::getFOV(void){
+	return fov;
 }
 
 void Camera::roll(double angle){
@@ -73,6 +79,10 @@ void Camera::translate(double du, double dv, double dn){
 	eye.x = eye.x + du * u.x + dv * v.x + dn * n.x;
 	eye.y = eye.y + du * u.y + dv * v.y + dn * n.y;
 	eye.z = eye.z + du * u.z + dv * v.z + dn * n.z;
+}
+
+void Camera::zoom(double delta){
+	fov += delta;
 }
 
 Camera::~Camera() {
