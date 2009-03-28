@@ -2,9 +2,9 @@
 
 namespace solarSystem {
 
-CelestialBody::CelestialBody(std::string n, float r, float maj, float ex,
+CelestialBody::CelestialBody(int n, float r, float maj, float ex,
 		float aph, float per, float om, float pd) {
-	name = n;
+	id = n;
 	radius = r;
 	major = maj;
 	minor = maj * sqrt(1 - pow(ex, 2));
@@ -19,8 +19,8 @@ CelestialBody::CelestialBody(std::string n, float r, float maj, float ex,
 CelestialBody::~CelestialBody() {
 }
 
-std::string CelestialBody::getName() const {
-	return name;
+int CelestialBody::getId() const {
+	return id;
 }
 
 void CelestialBody::addChild(const CelestialBody& c) {
