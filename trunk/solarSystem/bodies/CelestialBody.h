@@ -15,7 +15,7 @@ namespace solarSystem {
 
 class CelestialBody {
 private:
-	std::string name;
+	int id;
 	std::vector<CelestialBody> children;
 	float radius;
 	float major;
@@ -24,14 +24,10 @@ private:
 	float omega; // longitude of ascending node
 	float period;
 
-	float red;
-	float green;
-	float blue;
-
 public:
-	CelestialBody(std::string, float, float, float, float, float, float, float);
+	CelestialBody(int, float, float, float, float, float, float, float);
 	virtual ~CelestialBody();
-	std::string getName() const;
+	int getId() const;
 	void addChild(const CelestialBody&);
 	CelestialBody getChild(int) const;
 	int hasChildren() const;
