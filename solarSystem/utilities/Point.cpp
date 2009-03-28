@@ -7,6 +7,8 @@
 
 #include "Point.h"
 
+using namespace std;
+
 Point::Point() {
 	x = 0.0, y = 0.0, z = 0.0;
 }
@@ -30,6 +32,10 @@ void Point::buildTuple(double v[]){
 	v[1] = y;
 	v[2] = z;
 	v[3] = 1.0;
+}
+
+void Point::display(){
+	cout<<"x = "<<x<<", y = "<<y<<", z = "<<z<<endl;
 }
 
 Point::~Point() {

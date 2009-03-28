@@ -7,6 +7,8 @@
 
 #include "Camera.h"
 
+using namespace std;
+
 Camera::Camera() {
 	eye.set(0.0, 0.0, 0.0);
 	u.set(1.0, 0.0, 0.0);
@@ -20,7 +22,7 @@ void Camera::set(Point newEye, Point lookAt, Vector up){
 	n.normalize();
 	u.set(cross(up, n));
 	u.normalize();
-	v.set(cross(n, v));
+	v.set(cross(n, u));
 	v.normalize();
 }
 

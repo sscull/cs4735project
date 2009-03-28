@@ -7,6 +7,8 @@
 
 #include "Vector.h"
 
+using namespace std;
+
 Vector::Vector() {
 	x = 0.0; y = 0.0; z = 0.0;
 }
@@ -32,6 +34,10 @@ void Vector::normalize(){
 	x = x/size;
 	y = y/size;
 	z = z/size;
+}
+
+void Vector::display(){
+	cout<<"x = "<<x<<", y = "<<y<<", z = "<<z<<endl;
 }
 
 Vector::~Vector() {
