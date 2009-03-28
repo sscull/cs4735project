@@ -1,12 +1,6 @@
 #include "constants.h"
 #include "universe.h"
 
-#define WINDOW_WIDTH 1024
-#define WINDOW_HEIGHT 768
-#define BPP 24
-#define MOVE_SPEED 0.01
-#define MOUSE_SENSITIVITY 0.0003
-
 using namespace solarSystem;
 void mainLoop();
 void init();
@@ -119,7 +113,7 @@ void init() {
 	Point lookAt(0, 0, 0);
 	Vector up(0, 1, 0);
 
-	camera.set(eye, lookAt, up);
+	camera.set(eye, lookAt, up, 90);
 }
 
 void mainLoop() {
@@ -162,18 +156,18 @@ void mainLoop() {
 			du -= MOVE_SPEED;
 		if (right)
 			du += MOVE_SPEED;
-		/*if (ccw)
-		 camera.incRoll(-MOVE_SPEED);
+		if (ccw)
+		 camera.roll(-MOVE_SPEED);
 		 if (cw)
-		 camera.incRoll(MOVE_SPEED);*/
+		 camera.roll(MOVE_SPEED);
 		if (up)
 			dv += MOVE_SPEED;
 		if (down)
 			dv -= MOVE_SPEED;
-		/*if (zin)
-		 camera.incFov(-0.001);
-		 if (zout)
-		 camera.incFov(0.001);*/
+		if (zin)
+		 camera.zoom(-ZOOM_SPEED);
+		if (zout)
+		 camera.zoom(ZOOM_SPEED);
 
 		camera.translate(du, dv, dn);
 
@@ -278,7 +272,7 @@ void display() {
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(90, aspect, 0.01, 50.0);
+	gluPerspective(camera.getFOV(), aspect, 0.01, 50.0);
 	Point pos = camera.getEye();
 	Point dir = moveAlong(pos, invert(camera.getN()));
 	Vector up = camera.getV();

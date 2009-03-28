@@ -21,4 +21,11 @@
 #include "./utilities/Camera.h"
 #include "./utilities/Image.h"
 
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 768
+#define BPP 24
+#define MOVE_SPEED 0.01
+#define MOUSE_SENSITIVITY 0.0003
+#define ZOOM_SPEED 0.1
+
 #endif /* UNIVERSE_H_ */

@@ -15,17 +15,20 @@ class Camera {
 private:
 	Point eye;
 	Vector u, v, n;
+	double fov;
 public:
 	Camera();
-	void set(Point, Point, Vector);
+	void set(Point, Point, Vector, double);
 	Vector getU(void);
 	Vector getV(void);
 	Vector getN(void);
 	Point getEye(void);
+	double getFOV(void);
 	void roll(double);
 	void pitch(double);
 	void yaw(double);
 	void translate(double, double, double);
+	void zoom(double);
 	virtual ~Camera();
 };
 
