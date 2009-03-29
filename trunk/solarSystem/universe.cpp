@@ -4,6 +4,7 @@
 using namespace solarSystem;
 void mainLoop();
 void init();
+void initTextures();
 void initDisplay(int&, char**);
 bool keyDown(SDL_keysym*);
 void keyUp(SDL_keysym*);
@@ -28,11 +29,13 @@ bool forward, backward, left, right, up, down, cw, ccw, zin, zout;
 bool mouseCap;
 
 GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
+GLfloat yellow[] = { 1.0, 1.0, 0.2, 1.0 };
 GLfloat black[] = { 0.0, 0.0, 0.0, 1.0 };
 
 int main(int argc, char **argv) {
 	initDisplay(argc, argv);
 	init();
+	initTextures();
 
 	//createUniverse();
 	createTest();
@@ -116,6 +119,119 @@ void init() {
 	camera.set(eye, lookAt, up, 90);
 }
 
+void initTextures() {
+	Image* texture = new Image();
+	texture->readFile("./textures/sun.bmp");
+	std::cout << texture->getWidth() << " " << texture->getHeight()
+			<< std::endl;
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/mercury.bmp");
+	std::cout << texture->getWidth() << " " << texture->getHeight()
+			<< std::endl;
+	glBindTexture(GL_TEXTURE_2D, 1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/venus.bmp");
+	std::cout << texture->getWidth() << " " << texture->getHeight()
+			<< std::endl;
+	glBindTexture(GL_TEXTURE_2D, 2);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/earth.bmp");
+	std::cout << texture->getWidth() << " " << texture->getHeight()
+			<< std::endl;
+	glBindTexture(GL_TEXTURE_2D, 3);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/moon.bmp");
+	std::cout << texture->getWidth() << " " << texture->getHeight()
+			<< std::endl;
+	glBindTexture(GL_TEXTURE_2D, 21);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/mars.bmp");
+	std::cout << texture->getWidth() << " " << texture->getHeight()
+			<< std::endl;
+	glBindTexture(GL_TEXTURE_2D, 4);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/jupiter.bmp");
+	std::cout << texture->getWidth() << " " << texture->getHeight()
+			<< std::endl;
+	glBindTexture(GL_TEXTURE_2D, 5);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/saturn.bmp");
+	std::cout << texture->getWidth() << " " << texture->getHeight()
+			<< std::endl;
+	glBindTexture(GL_TEXTURE_2D, 6);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/uranus.bmp");
+	std::cout << texture->getWidth() << " " << texture->getHeight()
+			<< std::endl;
+	glBindTexture(GL_TEXTURE_2D, 7);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/neptune.bmp");
+	std::cout << texture->getWidth() << " " << texture->getHeight()
+			<< std::endl;
+	glBindTexture(GL_TEXTURE_2D, 8);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/pluto.bmp");
+	std::cout << texture->getWidth() << " " << texture->getHeight()
+			<< std::endl;
+	glBindTexture(GL_TEXTURE_2D, 9);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+}
+
 void mainLoop() {
 	bool loop = true;
 	SDL_Event event;
@@ -126,7 +242,7 @@ void mainLoop() {
 			switch (event.type) {
 			case SDL_VIDEORESIZE:
 				surface = SDL_SetVideoMode(event.resize.w, event.resize.h, BPP,
-				videoFlags);
+						videoFlags);
 				if (!surface)
 					loop = false;
 				reshape(event.resize.w, event.resize.h);
@@ -157,17 +273,17 @@ void mainLoop() {
 		if (right)
 			du += MOVE_SPEED;
 		if (ccw)
-		 camera.roll(-MOVE_SPEED);
-		 if (cw)
-		 camera.roll(MOVE_SPEED);
+			camera.roll(-MOVE_SPEED);
+		if (cw)
+			camera.roll(MOVE_SPEED);
 		if (up)
 			dv += MOVE_SPEED;
 		if (down)
 			dv -= MOVE_SPEED;
 		if (zin)
-		 camera.zoom(-ZOOM_SPEED);
+			camera.zoom(-ZOOM_SPEED);
 		if (zout)
-		 camera.zoom(ZOOM_SPEED);
+			camera.zoom(ZOOM_SPEED);
 
 		camera.translate(du, dv, dn);
 
@@ -323,25 +439,14 @@ void createUniverse() {
 void createTest() {
 	t = 0.0;
 
-	Image* texture = new Image();
-	texture->readFile("./textures/earth.bmp");
-	std::cout << texture->getWidth() << " " << texture->getHeight()
-			<< std::endl;
-	glBindTexture(GL_TEXTURE_2D, 1);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
-	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-			texture->getData());
-
 	sun = new Planet(0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-	CelestialBody * child1 = new Planet(1, 0.5, 5.0, 0.5, 1.0, 1.0, 180.0, 1.0);
+	CelestialBody * child1 = new Planet(8, 0.5, 5.0, 0.5, 1.0, 1.0, 180.0, 1.0);
 	CelestialBody * child11 =
 			new Planet(11, 0.25, 1.0, 0.0, 1.0, 1.0, 0.0, 0.5);
 	child1->addChild(*child11);
 
 	CelestialBody * child2 =
-			new Planet(2, 0.5, 9.0, 0.01, 1.0, 1.0, 180.0, 2.0);
+			new Planet(9, 0.5, 9.0, 0.01, 1.0, 1.0, 180.0, 2.0);
 	CelestialBody * child21 = new Planet(21, 0.25, 1.0, 0.5, 1.0, 1.0, 180.0,
 			0.1);
 	CelestialBody * child22 = new Planet(22, 0.33, 1.75, 0.5, 1.0, 1.0, 180.0,
@@ -367,7 +472,11 @@ void drawBody(CelestialBody p) {
 			/ 180.0) * cos(p.getOmega() * M_PI / 180.0));
 	glTranslated(x, 0, z);
 	glBindTexture(GL_TEXTURE_2D,p.getId());
+	if (p.getId() == 0)
+		glMaterialfv(GL_FRONT, GL_EMISSION, yellow);
 	gluSphere(sph, p.getRadius(), 100, 100);
+	if (p.getId() == 0)
+		glMaterialfv(GL_FRONT, GL_EMISSION, black);
 	if (int c = p.hasChildren()) {
 		for (int i = 0; i < c; i++) {
 			drawBody(p.getChild(i));
