@@ -164,7 +164,7 @@ void initTextures() {
 	texture->readFile("./textures/moon.bmp");
 	std::cout << texture->getWidth() << " " << texture->getHeight()
 			<< std::endl;
-	glBindTexture(GL_TEXTURE_2D, 21);
+	glBindTexture(GL_TEXTURE_2D, 31);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
@@ -440,19 +440,19 @@ void createTest() {
 	t = 0.0;
 
 	sun = new Planet(0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-	CelestialBody * child1 = new Planet(8, 0.5, 5.0, 0.5, 1.0, 1.0, 180.0, 1.0);
+	CelestialBody * child1 = new Planet(3, 0.5, 5.0, 0.5, 1.0, 1.0, 180.0, 1.0);
 	CelestialBody * child11 =
-			new Planet(11, 0.25, 1.0, 0.0, 1.0, 1.0, 0.0, 0.5);
+			new Planet(31, 0.25, 1.0, 0.0, 1.0, 1.0, 0.0, 0.5);
 	child1->addChild(*child11);
 
 	CelestialBody * child2 =
-			new Planet(9, 0.5, 9.0, 0.01, 1.0, 1.0, 180.0, 2.0);
+			new Planet(4, 0.5, 9.0, 0.01, 1.0, 1.0, 180.0, 2.0);
 	CelestialBody * child21 = new Planet(21, 0.25, 1.0, 0.5, 1.0, 1.0, 180.0,
 			0.1);
 	CelestialBody * child22 = new Planet(22, 0.33, 1.75, 0.5, 1.0, 1.0, 180.0,
 			0.2);
-	child2->addChild(*child21);
-	child2->addChild(*child22);
+//	child2->addChild(*child21);
+//	child2->addChild(*child22);
 
 	sun->addChild(*child1);
 	sun->addChild(*child2);
