@@ -61,3 +61,7 @@ Point moveAlong(Point o, Vector d){
 	Point r(o.x + d.x, o.y + d.y, o.z + d.z);
 	return r;
 }
+
+double getMag(Vector d){
+	return sqrt(d.x * d.x + d.y * d.y + d.z * d.z);
+}

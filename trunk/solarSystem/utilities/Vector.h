@@ -30,5 +30,6 @@ double dot(Vector, Vector);
 Vector cross(Vector, Vector);
 Vector invert(Vector);
 Point moveAlong(Point, Vector);
+double getMag(Vector);
 
 #endif /* VECTOR_H_ */
