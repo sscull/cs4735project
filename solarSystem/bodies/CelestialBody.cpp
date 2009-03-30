@@ -2,18 +2,21 @@
 
 namespace solarSystem {
 
-CelestialBody::CelestialBody(int n, float r, float maj, float ex,
-		float aph, float per, float om, float pd) {
+CelestialBody::CelestialBody(int n, float r, float maj, float e, float per,
+		float om, float i, float w) {
+	//textures
 	id = n;
+
+	//planet properties
 	radius = r;
-	major = maj;
-	minor = maj * sqrt(1 - pow(ex, 2));
-	float c = (aph - per) / 2.0;
-	// no orbital tilt
-	oCenter
-			= new Point(c * cos(om * M_PI / 180), 0.0, c * sin(om * M_PI / 180));
+
+	//orbital properites
+	semiMaj = maj;
+	ecc = e;
+	period = per;
 	omega = om;
-	period = pd;
+	inc = i;
+	apa = w;
 }
 
 CelestialBody::~CelestialBody() {
@@ -35,34 +38,36 @@ int CelestialBody::hasChildren() const {
 	return children.size();
 }
 
+//*****
+
 float CelestialBody::getRadius() const {
 	return radius;
 }
 
-float CelestialBody::getMajor() const {
-	return major;
+//*****
+
+float CelestialBody::getSemiMajor() const {
+	return semiMaj;
 }
 
-float CelestialBody::getMinor() const {
-	return minor;
+float CelestialBody::getEcc() const {
+	return ecc;
 }
 
-Point CelestialBody::getCenter() const {
-	return *oCenter;
-}
-
-void CelestialBody::setCenter(Point c) {
-	oCenter->x = c.x;
-	oCenter->y = c.y;
-	oCenter->z = c.z;
+float CelestialBody::getPeriod() const {
+	return period;
 }
 
 float CelestialBody::getOmega() const {
 	return omega;
 }
 
-float CelestialBody::getPeriod() const {
-	return period;
+float CelestialBody::getW() const {
+	return apa;
+}
+
+float CelestialBody::getInc() const {
+	return inc;
 }
 
 }

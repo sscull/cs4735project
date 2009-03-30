@@ -17,12 +17,19 @@ class CelestialBody {
 private:
 	int id;
 	std::vector<CelestialBody> children;
+
+	//planet
 	float radius;
-	float major;
-	float minor;
-	Point* oCenter; // center of elliptical orbit
-	float omega; // longitude of ascending node
+	float orbPer;
+	float aTilt;
+
+	//orbital
+	float semiMaj;
+	float ecc;
 	float period;
+	float omega; // longitude of ascending node
+	float inc;
+	float apa;
 
 public:
 	CelestialBody(int, float, float, float, float, float, float, float);
@@ -31,13 +38,15 @@ public:
 	void addChild(const CelestialBody&);
 	CelestialBody getChild(int) const;
 	int hasChildren() const;
+	//*****
 	float getRadius() const;
-	float getMajor() const;
-	float getMinor() const;
-	Point getCenter() const;
-	void setCenter(Point);
-	float getOmega() const;
+	//*****
+	float getSemiMajor() const;
+	float getEcc() const;
 	float getPeriod() const;
+	float getOmega() const;
+	float getW() const;
+	float getInc() const;
 };
 
 }
