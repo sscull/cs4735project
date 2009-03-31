@@ -2,13 +2,15 @@
 
 namespace solarSystem {
 
-CelestialBody::CelestialBody(int n, float r, float maj, float e, float per,
+CelestialBody::CelestialBody(int n, float r, float rp, float at, float maj, float e, float per,
 		float om, float i, float w) {
 	//textures
 	id = n;
 
 	//planet properties
 	radius = r;
+	rotPer = rp;
+	aTilt = at;
 
 	//orbital properites
 	semiMaj = maj;
@@ -42,6 +44,14 @@ int CelestialBody::hasChildren() const {
 
 float CelestialBody::getRadius() const {
 	return radius;
+}
+
+float CelestialBody::getRotPer() const {
+	return rotPer;
+}
+
+float CelestialBody::getATilt() const {
+	return aTilt;
 }
 
 //*****

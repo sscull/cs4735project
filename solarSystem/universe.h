@@ -15,7 +15,6 @@
 #include <cmath>
 
 #include "./bodies/CelestialBody.h"
-#include "./bodies/Planet.h"
 #include "./utilities/Point.h"
 #include "./utilities/Vector.h"
 #include "./utilities/Camera.h"
@@ -24,7 +23,7 @@
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 800
 #define BPP 24
-#define MOVE_SPEED 0.01
+#define MOVE_SPEED 0.1
 #define MOUSE_SENSITIVITY 0.0003
 #define ZOOM_SPEED 0.1
 #define NEWTON_DEPTH 5
