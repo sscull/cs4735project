@@ -20,7 +20,7 @@ private:
 
 	//planet
 	float radius;
-	float orbPer;
+	float rotPer;
 	float aTilt;
 
 	//orbital
@@ -32,7 +32,7 @@ private:
 	float apa;
 
 public:
-	CelestialBody(int, float, float, float, float, float, float, float);
+	CelestialBody(int, float, float, float, float, float, float, float, float, float);
 	virtual ~CelestialBody();
 	int getId() const;
 	void addChild(const CelestialBody&);
@@ -40,6 +40,8 @@ public:
 	int hasChildren() const;
 	//*****
 	float getRadius() const;
+	float getRotPer() const;
+	float getATilt() const;
 	//*****
 	float getSemiMajor() const;
 	float getEcc() const;

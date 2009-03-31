@@ -142,7 +142,7 @@ void init() {
 	glLightfv(GL_LIGHT0, GL_SPECULAR, white);
 	glLightfv(GL_LIGHT0, GL_POSITION, pos);
 
-	Point eye(20, 0, 0);
+	Point eye(450, 0, 0);
 	Point lookAt(0, 0, 0);
 	Vector up(0, 1, 0);
 
@@ -184,7 +184,7 @@ void initTextures() {
 			texture->getData());
 
 	texture->readFile("./textures/moon.bmp");
-	glBindTexture(GL_TEXTURE_2D, 21);
+	glBindTexture(GL_TEXTURE_2D, 31);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
@@ -296,7 +296,6 @@ void mainLoop() {
 		camera.translate(du, dv, dn);
 
 		t += t_factor;
-		std::cout<<t_factor<<std::endl;
 
 		display();
 		SDL_GL_SwapBuffers();
@@ -351,6 +350,8 @@ bool keyDown(SDL_keysym *keysym) {
 	default:
 		return true;
 	}
+
+	return true;
 }
 
 void keyUp(SDL_keysym *keysym) {
@@ -404,7 +405,7 @@ void display() {
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(camera.getFOV(), aspect, 0.01, 50.0);
+	gluPerspective(camera.getFOV(), aspect, 0.01, 5000.0);
 	Point pos = camera.getEye();
 	Point dir = moveAlong(pos, invert(camera.getN()));
 	Vector up = camera.getV();
@@ -416,65 +417,35 @@ void display() {
 	glFlush();
 }
 
-void createUniverse() {
-	t = 0.0;
-	t_factor = 0.1;
-
-	Image* texture = new Image();
-	texture->readFile("./textures/moon.bmp");
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
-	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-			texture->getData());
-
-	sun = new Planet(0, SUN_RADIUS, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-	CelestialBody * mercury = new Planet(1, MERCURY_RADIUS*50, MERCURY_MAJOR,
-	MERCURY_E, MERCURY_APH, MERCURY_PER, MERCURY_OMEGA, MERCURY_P);
-	CelestialBody * venus = new Planet(2, VENUS_RADIUS*50, VENUS_MAJOR,
-	VENUS_E, VENUS_APH, VENUS_PER, VENUS_OMEGA, VENUS_P);
-	CelestialBody * earth = new Planet(3, EARTH_RADIUS*50, EARTH_MAJOR,
-	EARTH_E, EARTH_APH, EARTH_PER, EARTH_OMEGA, EARTH_P);
-	CelestialBody * moon = new Planet(1, MOON_RADIUS, MOON_MAJOR, MOON_E,
-	MOON_APH, MOON_PER, MOON_OMEGA, MOON_P);
-	earth->addChild(*moon);
-
-	CelestialBody * mars = new Planet(4, MARS_RADIUS, MARS_MAJOR, MARS_E,
-	MARS_APH, MARS_PER, MARS_OMEGA, MARS_P);
-	CelestialBody * jupiter = new Planet(5, JUPITER_RADIUS,
-	JUPITER_MAJOR, JUPITER_E, JUPITER_APH, JUPITER_PER,
-	JUPITER_OMEGA, JUPITER_P);
-
-	sun->addChild(*mercury);
-	sun->addChild(*venus);
-	sun->addChild(*earth);
-	sun->addChild(*mars);
-	sun->addChild(*jupiter);
-}
 
 void createTest() {
 	t = 0.0;
-	t_factor = 1.0;
+	t_factor = 0.001;
 
-	sun = new CelestialBody(0, 1.0, 1, 1, 1, 0, 0, 0);
-	CelestialBody * child1 = new CelestialBody(3, 0.5, 5.0, 0.24880766,
-			247.92065, 110.30347, 11.88, 113.76329);
-	CelestialBody * child11 = new CelestialBody(21, 0.25, 1.0, 0.01671022,
-			1.000174, 348.73936, 1.578694, 114.20783);
-	child1->addChild(*child11);
+	sun = new CelestialBody(SUN_ID, SUN_R, SUN_ROT_PER, SUN_ATILT, SUN_SEMI_MAJOR, SUN_ECC, SUN_PER, SUN_OM, SUN_INC, SUN_W);
+	CelestialBody * child1 = new CelestialBody(MERCURY_ID, MERCURY_R, MERCURY_ROT_PER, MERCURY_ATILT, MERCURY_SEMI_MAJOR, MERCURY_ECC, MERCURY_PER, MERCURY_OM, MERCURY_INC, MERCURY_W);
+	CelestialBody * child2 = new CelestialBody(VENUS_ID, VENUS_R, VENUS_ROT_PER, VENUS_ATILT, VENUS_SEMI_MAJOR, VENUS_ECC, VENUS_PER, VENUS_OM, VENUS_INC, VENUS_W);
+	CelestialBody * child3 = new CelestialBody(EARTH_ID, EARTH_R, EARTH_ROT_PER, EARTH_ATILT, EARTH_SEMI_MAJOR, EARTH_ECC, EARTH_PER, EARTH_OM, EARTH_INC, EARTH_W);
+	CelestialBody * child31 = new CelestialBody(MOON_ID, MOON_R, MOON_ROT_PER, MOON_ATILT, MOON_SEMI_MAJOR, MOON_ECC, MOON_PER, MOON_OM, MOON_INC, MOON_W);
 
-	CelestialBody * child2 = new CelestialBody(9, 0.5, 9.0, 0.0549,
-			0.074802414, 0, 5.145, 0);
-	CelestialBody * child21 = new CelestialBody(6, 0.25, 1.0, 0.18874, 29.657,
-			113.642811, 5.51, 336.013862);
-	CelestialBody * child22 = new CelestialBody(5, 0.33, 1.75, 0.44177,
-			11.8592, 100.492, 6.09, 275.066);
-	child2->addChild(*child21);
-	child2->addChild(*child22);
+	child3->addChild(*child31);
+
+	CelestialBody * child4 = new CelestialBody(MARS_ID, MARS_R, MARS_ROT_PER, MARS_ATILT, MARS_SEMI_MAJOR, MARS_ECC, MARS_PER, MARS_OM, MARS_INC, MARS_W);
+	CelestialBody * child5 = new CelestialBody(JUPITER_ID, JUPITER_R, JUPITER_ROT_PER, JUPITER_ATILT, JUPITER_SEMI_MAJOR, JUPITER_ECC, JUPITER_PER, JUPITER_OM, JUPITER_INC, JUPITER_W);
+	CelestialBody * child6 = new CelestialBody(SATURN_ID, SATURN_R, SATURN_ROT_PER, SATURN_ATILT, SATURN_SEMI_MAJOR, SATURN_ECC, SATURN_PER, SATURN_OM, SATURN_INC, SATURN_W);
+	CelestialBody * child7 = new CelestialBody(URANUS_ID, URANUS_R, URANUS_ROT_PER, URANUS_ATILT, URANUS_SEMI_MAJOR, URANUS_ECC, URANUS_PER, URANUS_OM, URANUS_INC, URANUS_W);
+	CelestialBody * child8 = new CelestialBody(NEPTUNE_ID, NEPTUNE_R, NEPTUNE_ROT_PER, NEPTUNE_ATILT, NEPTUNE_SEMI_MAJOR, NEPTUNE_ECC, NEPTUNE_PER, NEPTUNE_OM, NEPTUNE_INC, NEPTUNE_W);
+	CelestialBody * child9 = new CelestialBody(PLUTO_ID, PLUTO_R, PLUTO_ROT_PER, PLUTO_ATILT, PLUTO_SEMI_MAJOR, PLUTO_ECC, PLUTO_PER, PLUTO_OM, PLUTO_INC, PLUTO_W);
 
 	sun->addChild(*child1);
 	sun->addChild(*child2);
+	sun->addChild(*child3);
+	sun->addChild(*child4);
+	sun->addChild(*child5);
+	sun->addChild(*child6);
+	sun->addChild(*child7);
+	sun->addChild(*child8);
+	sun->addChild(*child9);
 }
 
 void drawBody(CelestialBody p) {
@@ -552,9 +523,8 @@ void drawBody(CelestialBody p) {
 
 	}
 
-	//glRotated(360 * t / p.getOrbPer(), 0, 1, 0); //rotation as a function of time!
-	//glRotated(90 + p.getATilt(), -1, 0, 0);//TODO Axial Tilt
-	glRotated(90, -1, 0, 0);
+	glRotated(360 * t / p.getRotPer(), 0, 1, 0); //rotation as a function of time!
+	glRotated(90 + p.getATilt(), -1, 0, 0);//TODO Axial Tilt
 	gluSphere(sph, p.getRadius(), 100, 100);
 	glPopMatrix();
 
@@ -568,8 +538,8 @@ void drawBody(CelestialBody p) {
 	}
 
 	glPopMatrix();
-
-	/*glPushMatrix();
+/*
+	glPushMatrix();
 
 	 glLoadIdentity();
 
@@ -632,7 +602,7 @@ void drawBody(CelestialBody p) {
 	 GLUquadricObj * sphM = gluNewQuadric();
 	 gluQuadricNormals(sphM, GLU_SMOOTH);
 	 gluQuadricTexture(sphM, GL_TRUE);
-	 glBindTexture(GL_TEXTURE_2D, 21);
+	 glBindTexture(GL_TEXTURE_2D, 31);
 
 	 double moona = 2;
 	 double moonecc = 0.0549;
