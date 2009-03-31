@@ -417,25 +417,45 @@ void display() {
 	glFlush();
 }
 
-
 void createTest() {
 	t = 0.0;
 	t_factor = 0.001;
 
-	sun = new CelestialBody(SUN_ID, SUN_R, SUN_ROT_PER, SUN_ATILT, SUN_SEMI_MAJOR, SUN_ECC, SUN_PER, SUN_OM, SUN_INC, SUN_W);
-	CelestialBody * child1 = new CelestialBody(MERCURY_ID, MERCURY_R, MERCURY_ROT_PER, MERCURY_ATILT, MERCURY_SEMI_MAJOR, MERCURY_ECC, MERCURY_PER, MERCURY_OM, MERCURY_INC, MERCURY_W);
-	CelestialBody * child2 = new CelestialBody(VENUS_ID, VENUS_R, VENUS_ROT_PER, VENUS_ATILT, VENUS_SEMI_MAJOR, VENUS_ECC, VENUS_PER, VENUS_OM, VENUS_INC, VENUS_W);
-	CelestialBody * child3 = new CelestialBody(EARTH_ID, EARTH_R, EARTH_ROT_PER, EARTH_ATILT, EARTH_SEMI_MAJOR, EARTH_ECC, EARTH_PER, EARTH_OM, EARTH_INC, EARTH_W);
-	CelestialBody * child31 = new CelestialBody(MOON_ID, MOON_R, MOON_ROT_PER, MOON_ATILT, MOON_SEMI_MAJOR, MOON_ECC, MOON_PER, MOON_OM, MOON_INC, MOON_W);
+	sun = new CelestialBody(SUN_ID, SUN_R, SUN_ROT_PER, SUN_ATILT,
+			SUN_SEMI_MAJOR, SUN_ECC, SUN_PER, SUN_OM, SUN_INC, SUN_W);
+	CelestialBody * child1 = new CelestialBody(MERCURY_ID, MERCURY_R,
+			MERCURY_ROT_PER, MERCURY_ATILT, MERCURY_SEMI_MAJOR, MERCURY_ECC,
+			MERCURY_PER, MERCURY_OM, MERCURY_INC, MERCURY_W);
+	CelestialBody * child2 = new CelestialBody(VENUS_ID, VENUS_R,
+			VENUS_ROT_PER, VENUS_ATILT, VENUS_SEMI_MAJOR, VENUS_ECC,
+			VENUS_PER, VENUS_OM, VENUS_INC, VENUS_W);
+	CelestialBody * child3 = new CelestialBody(EARTH_ID, EARTH_R,
+			EARTH_ROT_PER, EARTH_ATILT, EARTH_SEMI_MAJOR, EARTH_ECC,
+			EARTH_PER, EARTH_OM, EARTH_INC, EARTH_W);
+	CelestialBody * child31 = new CelestialBody(MOON_ID, MOON_R,
+			MOON_ROT_PER, MOON_ATILT, MOON_SEMI_MAJOR, MOON_ECC,
+			MOON_PER, MOON_OM, MOON_INC, MOON_W);
 
 	child3->addChild(*child31);
 
-	CelestialBody * child4 = new CelestialBody(MARS_ID, MARS_R, MARS_ROT_PER, MARS_ATILT, MARS_SEMI_MAJOR, MARS_ECC, MARS_PER, MARS_OM, MARS_INC, MARS_W);
-	CelestialBody * child5 = new CelestialBody(JUPITER_ID, JUPITER_R, JUPITER_ROT_PER, JUPITER_ATILT, JUPITER_SEMI_MAJOR, JUPITER_ECC, JUPITER_PER, JUPITER_OM, JUPITER_INC, JUPITER_W);
-	CelestialBody * child6 = new CelestialBody(SATURN_ID, SATURN_R, SATURN_ROT_PER, SATURN_ATILT, SATURN_SEMI_MAJOR, SATURN_ECC, SATURN_PER, SATURN_OM, SATURN_INC, SATURN_W);
-	CelestialBody * child7 = new CelestialBody(URANUS_ID, URANUS_R, URANUS_ROT_PER, URANUS_ATILT, URANUS_SEMI_MAJOR, URANUS_ECC, URANUS_PER, URANUS_OM, URANUS_INC, URANUS_W);
-	CelestialBody * child8 = new CelestialBody(NEPTUNE_ID, NEPTUNE_R, NEPTUNE_ROT_PER, NEPTUNE_ATILT, NEPTUNE_SEMI_MAJOR, NEPTUNE_ECC, NEPTUNE_PER, NEPTUNE_OM, NEPTUNE_INC, NEPTUNE_W);
-	CelestialBody * child9 = new CelestialBody(PLUTO_ID, PLUTO_R, PLUTO_ROT_PER, PLUTO_ATILT, PLUTO_SEMI_MAJOR, PLUTO_ECC, PLUTO_PER, PLUTO_OM, PLUTO_INC, PLUTO_W);
+	CelestialBody * child4 = new CelestialBody(MARS_ID, MARS_R,
+			MARS_ROT_PER, MARS_ATILT, MARS_SEMI_MAJOR, MARS_ECC,
+			MARS_PER, MARS_OM, MARS_INC, MARS_W);
+	CelestialBody * child5 = new CelestialBody(JUPITER_ID, JUPITER_R,
+			JUPITER_ROT_PER, JUPITER_ATILT, JUPITER_SEMI_MAJOR, JUPITER_ECC,
+			JUPITER_PER, JUPITER_OM, JUPITER_INC, JUPITER_W);
+	CelestialBody * child6 = new CelestialBody(SATURN_ID, SATURN_R,
+			SATURN_ROT_PER, SATURN_ATILT, SATURN_SEMI_MAJOR, SATURN_ECC,
+			SATURN_PER, SATURN_OM, SATURN_INC, SATURN_W);
+	CelestialBody * child7 = new CelestialBody(URANUS_ID, URANUS_R,
+			URANUS_ROT_PER, URANUS_ATILT, URANUS_SEMI_MAJOR, URANUS_ECC,
+			URANUS_PER, URANUS_OM, URANUS_INC, URANUS_W);
+	CelestialBody * child8 = new CelestialBody(NEPTUNE_ID, NEPTUNE_R,
+			NEPTUNE_ROT_PER, NEPTUNE_ATILT, NEPTUNE_SEMI_MAJOR, NEPTUNE_ECC,
+			NEPTUNE_PER, NEPTUNE_OM, NEPTUNE_INC, NEPTUNE_W);
+	CelestialBody * child9 = new CelestialBody(PLUTO_ID, PLUTO_R,
+			PLUTO_ROT_PER, PLUTO_ATILT, PLUTO_SEMI_MAJOR, PLUTO_ECC,
+			PLUTO_PER, PLUTO_OM, PLUTO_INC, PLUTO_W);
 
 	sun->addChild(*child1);
 	sun->addChild(*child2);
@@ -495,6 +515,8 @@ void drawBody(CelestialBody p) {
 		glMaterialfv(GL_FRONT, GL_EMISSION, yellow);
 	else {
 
+		glMaterialfv(GL_FRONT, GL_EMISSION, black);
+
 		double a = p.getSemiMajor();
 		double ecc = p.getEcc();
 		double per = p.getPeriod();
@@ -538,8 +560,8 @@ void drawBody(CelestialBody p) {
 	}
 
 	glPopMatrix();
-/*
-	glPushMatrix();
+	/*
+	 glPushMatrix();
 
 	 glLoadIdentity();
 
