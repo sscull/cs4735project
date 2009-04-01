@@ -24,6 +24,8 @@
 #define WINDOW_HEIGHT 800
 #define BPP 24
 #define MOVE_SPEED 0.1
+#define FASTER 150000
+#define ROT_SPEED 0.001
 #define MOUSE_SENSITIVITY 0.0003
 #define ZOOM_SPEED 0.1
 #define NEWTON_DEPTH 5
