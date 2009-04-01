@@ -28,6 +28,8 @@ SDL_Surface* surface;
 int videoFlags;
 bool forward, backward, left, right, up, down, cw, ccw, zin, zout;
 bool mouseCap;
+bool lock = true;
+int planet = 3;
 
 GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat yellow[] = { 1.0, 1.0, 0.55, 1.0 };
@@ -403,14 +405,15 @@ void reshape(int x, int y) {
 
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(camera.getFOV(), aspect, 0.01, 5000.0);
-	Point pos = camera.getEye();
-	Point dir = moveAlong(pos, invert(camera.getN()));
-	Vector up = camera.getV();
-	gluLookAt(pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, up.x, up.y, up.z);
-
+	if (!lock) {
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluPerspective(camera.getFOV(), aspect, 0.01, 5000.0);
+		Point pos = camera.getEye();
+		Point dir = moveAlong(pos, invert(camera.getN()));
+		Vector up = camera.getV();
+		gluLookAt(pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, up.x, up.y, up.z);
+	}
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	drawBody(*sun);
@@ -419,7 +422,7 @@ void display() {
 
 void createTest() {
 	t = 0.0;
-	t_factor = 0.001;
+	t_factor = 0.00001;
 
 	sun = new CelestialBody(SUN_ID, SUN_R, SUN_ROT_PER, SUN_ATILT,
 			SUN_SEMI_MAJOR, SUN_ECC, SUN_PER, SUN_OM, SUN_INC, SUN_W);
@@ -432,15 +435,13 @@ void createTest() {
 	CelestialBody * child3 = new CelestialBody(EARTH_ID, EARTH_R,
 			EARTH_ROT_PER, EARTH_ATILT, EARTH_SEMI_MAJOR, EARTH_ECC,
 			EARTH_PER, EARTH_OM, EARTH_INC, EARTH_W);
-	CelestialBody * child31 = new CelestialBody(MOON_ID, MOON_R,
-			MOON_ROT_PER, MOON_ATILT, MOON_SEMI_MAJOR, MOON_ECC,
-			MOON_PER, MOON_OM, MOON_INC, MOON_W);
+	CelestialBody * child31 = new CelestialBody(MOON_ID, MOON_R, MOON_ROT_PER,
+	MOON_ATILT, MOON_SEMI_MAJOR, MOON_ECC, MOON_PER, MOON_OM, MOON_INC, MOON_W);
 
 	child3->addChild(*child31);
 
-	CelestialBody * child4 = new CelestialBody(MARS_ID, MARS_R,
-			MARS_ROT_PER, MARS_ATILT, MARS_SEMI_MAJOR, MARS_ECC,
-			MARS_PER, MARS_OM, MARS_INC, MARS_W);
+	CelestialBody * child4 = new CelestialBody(MARS_ID, MARS_R, MARS_ROT_PER,
+	MARS_ATILT, MARS_SEMI_MAJOR, MARS_ECC, MARS_PER, MARS_OM, MARS_INC, MARS_W);
 	CelestialBody * child5 = new CelestialBody(JUPITER_ID, JUPITER_R,
 			JUPITER_ROT_PER, JUPITER_ATILT, JUPITER_SEMI_MAJOR, JUPITER_ECC,
 			JUPITER_PER, JUPITER_OM, JUPITER_INC, JUPITER_W);
@@ -469,37 +470,6 @@ void createTest() {
 }
 
 void drawBody(CelestialBody p) {
-	/*
-	 glPushMatrix();
-	 GLUquadricObj * sph = gluNewQuadric();
-	 gluQuadricNormals(sph, GLU_SMOOTH);
-	 gluQuadricTexture(sph, GL_TRUE);
-
-	 double pt = t / p.getPeriod();
-
-	 double x = (p.getSemiMajor() * cos(pt * M_PI / 180.0) * cos(
-	 p.getOmega() * M_PI / 180.0)) - (p.getSemiMajor() * sin(pt * M_PI
-	 / 180.0) * sin(p.getOmega() * M_PI / 180.0));
-	 double z = (p.getSemiMajor() * cos(pt * M_PI / 180.0) * sin(
-	 p.getOmega() * M_PI / 180.0)) + (p.getSemiMajor() * sin(pt * M_PI
-	 / 180.0) * cos(p.getOmega() * M_PI / 180.0));
-	 glTranslated(x, 0, z);
-
-	 glBindTexture(GL_TEXTURE_2D,p.getId());
-	 if (p.getId() == 0)
-	 glMaterialfv(GL_FRONT, GL_EMISSION, yellow);
-	 gluSphere(sph, p.getRadius(), 100, 100);
-
-	 if (p.getId() == 0)
-	 glMaterialfv(GL_FRONT, GL_EMISSION, black);
-	 if (int c = p.hasChildren()) {
-	 for (int i = 0; i < c; i++) {
-	 drawBody(p.getChild(i));
-	 }
-	 }
-	 glPopMatrix();
-	 */
-
 	glPushMatrix();
 
 	double x = 0;
@@ -514,7 +484,6 @@ void drawBody(CelestialBody p) {
 	if (p.getId() == 0)
 		glMaterialfv(GL_FRONT, GL_EMISSION, yellow);
 	else {
-
 		glMaterialfv(GL_FRONT, GL_EMISSION, black);
 
 		double a = p.getSemiMajor();
@@ -537,6 +506,27 @@ void drawBody(CelestialBody p) {
 		glRotated(i, 1, 0, 0);//i
 		glRotated(lan, 0, 1, 0);//omega
 		glTranslated(x, 0, z);
+
+		if (lock && p.getId() == planet) {
+			Point ppos(x + 2 * p.getRadius(), 0, z);
+			Point plook(x, 0, z);
+			Vector pup(0, 1, 0);
+			camera.set(ppos, plook, pup, camera.getFOV());
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+			gluPerspective(camera.getFOV(), aspect, 0.01, 5000.0);
+			Point pos = camera.getEye();
+			Point dir = moveAlong(pos, invert(camera.getN()));
+			Vector up = camera.getV();
+			glRotated(apa, 0, 1, 0);//w
+			glRotated(i, 1, 0, 0);//i
+			glRotated(lan, 0, 1, 0);//omega
+			gluLookAt(pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, up.x, up.y,
+					up.z);
+
+			glMatrixMode(GL_MODELVIEW);
+		}
+
 		glRotated(-lan, 0, 1, 0);//omega
 		glRotated(-i, 1, 0, 0);//i
 		glRotated(-apa, 0, 1, 0);//w
@@ -560,137 +550,4 @@ void drawBody(CelestialBody p) {
 	}
 
 	glPopMatrix();
-	/*
-	 glPushMatrix();
-
-	 glLoadIdentity();
-
-	 //SUN
-	 GLUquadricObj * sphS = gluNewQuadric();
-	 gluQuadricNormals(sphS, GLU_SMOOTH);
-	 gluQuadricTexture(sphS, GL_TRUE);
-
-	 glBindTexture(GL_TEXTURE_2D, 0);
-	 glMaterialfv(GL_FRONT, GL_EMISSION, yellow);//TODO fix emissive lighting model
-
-	 glPushMatrix();
-	 glRotated(90, -1, 0, 0);
-	 gluSphere(sphS, 2, 100, 100);
-	 glPopMatrix();
-
-	 glMaterialfv(GL_FRONT, GL_EMISSION, black);//TODO fix emissive lighting model
-
-	 //Earth
-	 glPushMatrix();
-
-	 GLUquadricObj * sphE = gluNewQuadric();
-	 gluQuadricNormals(sphE, GLU_SMOOTH);
-	 gluQuadricTexture(sphE, GL_TRUE);
-	 glBindTexture(GL_TEXTURE_2D, 3);
-
-	 double eartha = 7.0;
-	 double earthecc = 0.01671022;
-	 double earthPer = 1.000174;
-	 double slr = findP(eartha, earthecc);
-	 double earthM = findM(earthPer, t);
-	 double earthE = findE(NEWTON_DEPTH, NEWTON_GUESS, earthM, earthecc);
-	 double earthTheta = findTheta(earthecc, earthE);
-
-	 double earthr = findDist(slr, earthecc, earthTheta);
-
-	 double earthapa = 114.20783;
-	 double earthi = 1.578694;
-	 double earthlan = 348.73936;
-
-	 double x = earthr * sin(earthTheta);
-	 double z = earthr * -cos(earthTheta);
-
-	 glRotated(earthapa, 0, 1, 0);//w
-	 glRotated(earthi, 1, 0, 0);//i
-	 glRotated(earthlan, 0, 1, 0);//omega
-	 glTranslated(x, 0, z);
-	 glRotated(-earthlan, 0, 1, 0);//omega
-	 glRotated(-earthi, 1, 0, 0);//i
-	 glRotated(-earthapa, 0, 1, 0);//w
-
-	 glPushMatrix();
-	 glRotated(360*t/0.00273037557837098, 0 , 1, 0); //rotation as a function of time!
-	 glRotated(113.439281, -1, 0, 0);//TODO Axial Tilt
-	 gluSphere(sphE, 1, 100, 100);
-	 glPopMatrix();
-
-	 //Moon
-
-	 GLUquadricObj * sphM = gluNewQuadric();
-	 gluQuadricNormals(sphM, GLU_SMOOTH);
-	 gluQuadricTexture(sphM, GL_TRUE);
-	 glBindTexture(GL_TEXTURE_2D, 31);
-
-	 double moona = 2;
-	 double moonecc = 0.0549;
-	 double moonper = 0.074802414;
-
-	 double moonslr = findP(moona, moonecc);
-	 double moonM = findM(moonper, t);
-	 double moonE = findE(NEWTON_DEPTH, NEWTON_GUESS, moonM, moonecc);
-	 double moonTheta = findTheta(moonecc, moonE);
-	 double moonDist = findDist(moonslr, moonecc, moonTheta);
-
-	 double moonlan = 0;
-	 double mooni = 5.145;
-	 double moonapa = 0;
-
-	 x = moonDist * sin(moonTheta);
-	 z = moonDist * -cos(moonTheta);
-
-	 glRotated(moonapa, 0, 1, 0);//w
-	 glRotated(mooni, 1, 0, 0);//i
-	 glRotated(moonlan, 0, 1, 0);//omega
-	 glTranslated(x, 0, z);
-	 glRotated(-moonlan, 0, 1, 0);//omega
-	 glRotated(-mooni, 1, 0, 0);//i
-	 glRotated(-moonapa, 0, 1, 0);//w
-
-	 glPushMatrix();
-	 glRotated(91.5424, -1, 0, 0);//TODO Axial Tilt
-	 gluSphere(sphM, 0.25, 100, 100);
-	 glPopMatrix();
-
-	 glPopMatrix();
-
-	 //Pluto
-	 glPushMatrix();
-
-	 double plutoa = 30;
-	 double plutoecc = 0.24880766;
-	 double plutoPer = 247.92065;
-	 double plutoP = findP(plutoa, plutoecc);
-	 double plutoM = findM(plutoPer, t);
-	 double plutoE = findE(NEWTON_DEPTH, NEWTON_GUESS, plutoM, plutoecc);
-	 double plutoTheta = findTheta(plutoecc, plutoE);
-	 double plutor = findDist(plutoP, plutoecc, plutoTheta);
-
-	 x = plutor * sin(plutoTheta);
-	 z = plutor * -cos(plutoTheta);
-
-	 glRotated(113.76329, 0, 1, 0);//w
-	 glRotated(11.88, 1, 0, 0);//i
-	 glRotated(110.030347, 0, 1, 0);//omega
-	 glTranslated(x, 0, z);
-
-	 GLUquadricObj * sphP = gluNewQuadric();
-	 gluQuadricNormals(sphP, GLU_SMOOTH);
-	 gluQuadricTexture(sphP, GL_TRUE);
-
-	 glBindTexture(GL_TEXTURE_2D, 9);
-
-	 glPushMatrix();
-	 glRotated(90, -1, 0, 0);
-	 gluSphere(sphP, 0.35, 100, 100);
-	 glPopMatrix();
-
-	 glPopMatrix();
-
-	 glPopMatrix();*/
-
 }
