@@ -31,5 +31,6 @@ Vector cross(Vector, Vector);
 Vector invert(Vector);
 Point moveAlong(Point, Vector);
 double getMag(Vector);
+Vector scale(Vector, double);
 
 #endif /* VECTOR_H_ */
