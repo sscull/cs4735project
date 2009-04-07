@@ -3,7 +3,7 @@
 //Axial tilt and inclination based off ecliptic plane
 
 #define YEAR 365.25
-#define FACTOR 109
+#define FACTOR 175
 
 //SUN
 
@@ -73,9 +73,9 @@
 #define MOON_ROT_PER 27.321582 / YEAR
 #define MOON_ATILT 1.5424
 
-#define MOON_SEMI_MAJOR 0.00257 * FACTOR * 3
+#define MOON_SEMI_MAJOR 0.00257 * 1200
 #define MOON_ECC 0.0549
-#define MOON_PER 27.321582 / YEAR
+#define MOON_PER -27.321582 / YEAR
 #define MOON_OM 0
 #define MOON_INC 5.145
 #define MOON_W 0
