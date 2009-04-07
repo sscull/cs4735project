@@ -19,6 +19,8 @@ int videoFlags;
 bool forward, backward, left, right, up, down, cw, ccw, zin, zout, shift;
 bool mouseCap;
 
+//TODO go to function, then loop on goto for lock on!or
+
 GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat yellow[] = { 1.0, 1.0, 0.55, 1.0 };
 GLfloat black[] = { 0.0, 0.0, 0.0, 1.0 };
