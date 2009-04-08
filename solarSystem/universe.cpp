@@ -141,8 +141,7 @@ void initDisplay(int& argc, char** argv) {
 
 	SDL_WM_SetCaption("Solar System Sim", "Solar System Sim");
 
-	mouseCap = true;
-	SDL_WM_GrabInput(SDL_GRAB_ON);
+	mouseCap = false;
 	SDL_ShowCursor(0);
 }
 
