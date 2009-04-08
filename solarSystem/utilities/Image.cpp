@@ -27,7 +27,7 @@ uint8_t* Image::getData() {
 bool Image::readFile(std::string filename) {
 	std::ifstream imgFile(filename.c_str(), std::ios::in | std::ios::binary);
 	if (!imgFile) {
-		std::cout << "FAIL!" << std::endl;
+		std::cout<<filename.c_str() << " FAIL!" << std::endl;
 		return 0;
 	}
 	uint16_t dummy16;

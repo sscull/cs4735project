@@ -8,7 +8,7 @@ double t;
 double t_factor;
 
 double aspect = 1.0;
-double lock = true;
+bool lock = true;
 int planet = 5;
 bool startCamera;
 
@@ -527,6 +527,7 @@ bool keyDown(SDL_keysym *keysym) {
 		else
 			lock = true;
 		break;
+
 	default:
 		return true;
 	}
@@ -656,7 +657,7 @@ void createTest() {
 			JUPITER_ROT_PER, JUPITER_ATILT, JUPITER_SEMI_MAJOR, JUPITER_ECC,
 			JUPITER_PER, JUPITER_OM, JUPITER_INC, JUPITER_W);
 	CelestialBody * child51 = new CelestialBody(IO_ID, IO_R, IO_ROT_PER,
-			IO_ATILT, IO_SEMI_MAJOR, IO_ECC, IO_PER, IO_OM, IO_INC, IO_W);
+	IO_ATILT, IO_SEMI_MAJOR, IO_ECC, IO_PER, IO_OM, IO_INC, IO_W);
 	CelestialBody * child52 = new CelestialBody(EUROPA_ID, EUROPA_R,
 			EUROPA_ROT_PER, EUROPA_ATILT, EUROPA_SEMI_MAJOR, EUROPA_ECC,
 			EUROPA_PER, EUROPA_OM, EUROPA_INC, EUROPA_W);
@@ -688,8 +689,8 @@ void createTest() {
 			MIMAS_ROT_PER, MIMAS_ATILT, MIMAS_SEMI_MAJOR, MIMAS_ECC, MIMAS_PER,
 			MIMAS_OM, MIMAS_INC, MIMAS_W);
 	CelestialBody * child65 = new CelestialBody(RHEA_ID, RHEA_R, RHEA_ROT_PER,
-			RHEA_ATILT, RHEA_SEMI_MAJOR, RHEA_ECC, RHEA_PER, RHEA_OM, RHEA_INC,
-			RHEA_W);
+	RHEA_ATILT, RHEA_SEMI_MAJOR, RHEA_ECC, RHEA_PER, RHEA_OM, RHEA_INC,
+	RHEA_W);
 	CelestialBody * child66 = new CelestialBody(TETHYS_ID, TETHYS_R,
 			TETHYS_ROT_PER, TETHYS_ATILT, TETHYS_SEMI_MAJOR, TETHYS_ECC,
 			TETHYS_PER, TETHYS_OM, TETHYS_INC, TETHYS_W);
@@ -770,16 +771,31 @@ void drawBody(CelestialBody p) {
 	}
 	glRotated(p.getATilt(), 1, 0, 0);
 	glRotated(360 * t / p.getRotPer(), 0, 1, 0); //rotation as a function of time!
-	if (p.getId() == 6) {
-		for (int i = 0; i < 1000; i++) {
 
-			double randPi = rand() % 360;
+	if (p.getId() == 6) {
+		for (int i = 0; i < 5000; i++) {
+
+			double randPi = (rand() % 36000) / 100.0;
 			double randR = (rand() % (int) 100 * p.getRadius()) / 100.0 + 2
 					* p.getRadius();
-			std::cout << randPi << std::endl;
-			std::cout << randR << std::endl;
 
 			glBegin(GL_POINTS);
+			glNormal3f(0, 1, 0);
+			glVertex3f(randR * cos(randPi * M_PI / 180), 0, randR * sin(randPi
+					* M_PI / 180));
+			glEnd();
+		}
+	}
+
+	if (p.getId() == 7) {
+		for (int i = 0; i < 5000; i++) {
+
+			double randPi = (rand() % 36000) / 100.0;
+			double randR = (rand() % (int) 50 * p.getRadius()) / 100.0 + 2
+					* p.getRadius();
+
+			glBegin(GL_POINTS);
+			glNormal3f(0, 1, 0);
 			glVertex3f(randR * cos(randPi * M_PI / 180), 0, randR * sin(randPi
 					* M_PI / 180));
 			glEnd();
