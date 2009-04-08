@@ -9,7 +9,7 @@ double t_factor;
 
 double aspect = 1.0;
 double lock = true;
-int planet = 2;
+int planet = 5;
 bool startCamera;
 
 Camera camera;
@@ -262,8 +262,96 @@ void initTextures() {
 	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
 			texture->getData());
 
+	texture->readFile("./textures/jupiter_moons/io.bmp");
+	glBindTexture(GL_TEXTURE_2D, 51);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/jupiter_moons/europa.bmp");
+	glBindTexture(GL_TEXTURE_2D, 52);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/jupiter_moons/ganymede.bmp");
+	glBindTexture(GL_TEXTURE_2D, 53);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/jupiter_moons/callisto.bmp");
+	glBindTexture(GL_TEXTURE_2D, 54);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
 	texture->readFile("./textures/saturn.bmp");
 	glBindTexture(GL_TEXTURE_2D, 6);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/saturn/dione.bmp");
+	glBindTexture(GL_TEXTURE_2D, 61);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/saturn/enceladus.bmp");
+	glBindTexture(GL_TEXTURE_2D, 62);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/saturn/iapetus.bmp");
+	glBindTexture(GL_TEXTURE_2D, 63);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/saturn/mimas.bmp");
+	glBindTexture(GL_TEXTURE_2D, 64);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/saturn/rhea.bmp");
+	glBindTexture(GL_TEXTURE_2D, 65);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/saturn/tethys.bmp");
+	glBindTexture(GL_TEXTURE_2D, 66);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
+
+	texture->readFile("./textures/saturn/titan.bmp");
+	glBindTexture(GL_TEXTURE_2D, 67);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
@@ -563,12 +651,59 @@ void createTest() {
 
 	CelestialBody * child4 = new CelestialBody(MARS_ID, MARS_R, MARS_ROT_PER,
 	MARS_ATILT, MARS_SEMI_MAJOR, MARS_ECC, MARS_PER, MARS_OM, MARS_INC, MARS_W);
+
 	CelestialBody * child5 = new CelestialBody(JUPITER_ID, JUPITER_R,
 			JUPITER_ROT_PER, JUPITER_ATILT, JUPITER_SEMI_MAJOR, JUPITER_ECC,
 			JUPITER_PER, JUPITER_OM, JUPITER_INC, JUPITER_W);
+	CelestialBody * child51 = new CelestialBody(IO_ID, IO_R, IO_ROT_PER,
+			IO_ATILT, IO_SEMI_MAJOR, IO_ECC, IO_PER, IO_OM, IO_INC, IO_W);
+	CelestialBody * child52 = new CelestialBody(EUROPA_ID, EUROPA_R,
+			EUROPA_ROT_PER, EUROPA_ATILT, EUROPA_SEMI_MAJOR, EUROPA_ECC,
+			EUROPA_PER, EUROPA_OM, EUROPA_INC, EUROPA_W);
+	CelestialBody * child53 = new CelestialBody(GANYMEDE_ID, GANYMEDE_R,
+			GANYMEDE_ROT_PER, GANYMEDE_ATILT, GANYMEDE_SEMI_MAJOR,
+			GANYMEDE_ECC, GANYMEDE_PER, GANYMEDE_OM, GANYMEDE_INC, GANYMEDE_W);
+	CelestialBody * child54 = new CelestialBody(CALLISTO_ID, CALLISTO_R,
+			CALLISTO_ROT_PER, CALLISTO_ATILT, CALLISTO_SEMI_MAJOR,
+			CALLISTO_ECC, CALLISTO_PER, CALLISTO_OM, CALLISTO_INC, CALLISTO_W);
+	child5->addChild(*child51);
+	child5->addChild(*child52);
+	child5->addChild(*child53);
+	child5->addChild(*child54);
+
 	CelestialBody * child6 = new CelestialBody(SATURN_ID, SATURN_R,
 			SATURN_ROT_PER, SATURN_ATILT, SATURN_SEMI_MAJOR, SATURN_ECC,
 			SATURN_PER, SATURN_OM, SATURN_INC, SATURN_W);
+	CelestialBody * child61 = new CelestialBody(DIONE_ID, DIONE_R,
+			DIONE_ROT_PER, DIONE_ATILT, DIONE_SEMI_MAJOR, DIONE_ECC, DIONE_PER,
+			DIONE_OM, DIONE_INC, DIONE_W);
+	CelestialBody * child62 = new CelestialBody(ENCELADUS_ID, ENCELADUS_R,
+			ENCELADUS_ROT_PER, ENCELADUS_ATILT, ENCELADUS_SEMI_MAJOR,
+			ENCELADUS_ECC, ENCELADUS_PER, ENCELADUS_OM, ENCELADUS_INC,
+			ENCELADUS_W);
+	CelestialBody * child63 = new CelestialBody(IAPETUS_ID, IAPETUS_R,
+			IAPETUS_ROT_PER, IAPETUS_ATILT, IAPETUS_SEMI_MAJOR, IAPETUS_ECC,
+			IAPETUS_PER, IAPETUS_OM, IAPETUS_INC, IAPETUS_W);
+	CelestialBody * child64 = new CelestialBody(MIMAS_ID, MIMAS_R,
+			MIMAS_ROT_PER, MIMAS_ATILT, MIMAS_SEMI_MAJOR, MIMAS_ECC, MIMAS_PER,
+			MIMAS_OM, MIMAS_INC, MIMAS_W);
+	CelestialBody * child65 = new CelestialBody(RHEA_ID, RHEA_R, RHEA_ROT_PER,
+			RHEA_ATILT, RHEA_SEMI_MAJOR, RHEA_ECC, RHEA_PER, RHEA_OM, RHEA_INC,
+			RHEA_W);
+	CelestialBody * child66 = new CelestialBody(TETHYS_ID, TETHYS_R,
+			TETHYS_ROT_PER, TETHYS_ATILT, TETHYS_SEMI_MAJOR, TETHYS_ECC,
+			TETHYS_PER, TETHYS_OM, TETHYS_INC, TETHYS_W);
+	CelestialBody * child67 = new CelestialBody(TITAN_ID, TITAN_R,
+			TITAN_ROT_PER, TITAN_ATILT, TITAN_SEMI_MAJOR, TITAN_ECC, TITAN_PER,
+			TITAN_OM, TITAN_INC, TITAN_W);
+	child6->addChild(*child61);
+	child6->addChild(*child62);
+	child6->addChild(*child63);
+	child6->addChild(*child64);
+	child6->addChild(*child65);
+	child6->addChild(*child66);
+	child6->addChild(*child67);
+
 	CelestialBody * child7 = new CelestialBody(URANUS_ID, URANUS_R,
 			URANUS_ROT_PER, URANUS_ATILT, URANUS_SEMI_MAJOR, URANUS_ECC,
 			URANUS_PER, URANUS_OM, URANUS_INC, URANUS_W);
@@ -635,8 +770,25 @@ void drawBody(CelestialBody p) {
 	}
 	glRotated(p.getATilt(), 1, 0, 0);
 	glRotated(360 * t / p.getRotPer(), 0, 1, 0); //rotation as a function of time!
+	if (p.getId() == 6) {
+		for (int i = 0; i < 1000; i++) {
+
+			double randPi = rand() % 360;
+			double randR = (rand() % (int) 100 * p.getRadius()) / 100.0 + 2
+					* p.getRadius();
+			std::cout << randPi << std::endl;
+			std::cout << randR << std::endl;
+
+			glBegin(GL_POINTS);
+			glVertex3f(randR * cos(randPi * M_PI / 180), 0, randR * sin(randPi
+					* M_PI / 180));
+			glEnd();
+		}
+	}
 	glRotated(-90, 1, 0, 0);
+
 	gluSphere(sph, p.getRadius(), 100, 100);
+
 	glPopMatrix();
 
 	if (p.getId() == 0)
