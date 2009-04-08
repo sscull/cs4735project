@@ -15,10 +15,7 @@
 #include <cmath>
 
 #include "./bodies/CelestialBody.h"
-#include "./utilities/Point.h"
-#include "./utilities/Vector.h"
-#include "./utilities/Camera.h"
-#include "./utilities/Image.h"
+#include "./utilities/utilities.h"
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 800
