@@ -1,8 +1,6 @@
 #include "constants.h"
 #include "universe.h"
 
-
-
 void drawBody(CelestialBody);
 
 CelestialBody * sun;
@@ -10,16 +8,15 @@ double t;
 double t_factor;
 
 double aspect = 1.0;
-double lock = false;
-int planet = 3;
+double lock = true;
+int planet = 8;
+bool startCamera;
 
 Camera camera;
 SDL_Surface* surface;
 int videoFlags;
 bool forward, backward, left, right, up, down, cw, ccw, zin, zout, shift;
 bool mouseCap;
-
-//TODO go to function, then loop on goto for lock on!or
 
 GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat yellow[] = { 1.0, 1.0, 0.55, 1.0 };
@@ -38,14 +35,11 @@ Vector rotVecIntoOrbit(Vector r, double om, double i, double w) {
 	double s2 = sin(iRad);
 	double s3 = sin(wRad);
 
-	//on link use equation 48 - 50, and make matrix A
+	Vector m1(c1 * c3 - c2 * s1 * s3, s1 * s2, -c2 * c3 * s1 - c1 * s3);
 
-	//todo have rows of tranformation matrix dot'd with colum vector to be transformed
-	Vector m1(c1*c3 - c2*s1*s3, s1*s2, -c2*c3*s1 - c1*s3);
+	Vector m2(s2 * s3, c2, c3 * s2);
 
-	Vector m2(s2*s3, c2, c3*s2);
-
-	Vector m3(c3*s1 + c1*c2*s3, -c1*s2, c1*c2*c3 - s1*s3);
+	Vector m3(c3 * s1 + c1 * c2 * s3, -c1 * s2, c1 * c2 * c3 - s1 * s3);
 
 	Vector newR(dot(m1, r), dot(m2, r), dot(m3, r));
 
@@ -82,12 +76,48 @@ double findDist(double p, double ecc, double theta) {
 	return p / (1 + ecc * cos(theta));
 }
 
+void goToPlanet(CelestialBody p) {
+
+	double a = p.getSemiMajor();
+	double ecc = p.getEcc();
+	double per = p.getPeriod();
+	double lan = p.getOmega(); //Longitude of Ascending Node
+	double apa = p.getW(); //Argument of Periapsis
+	double i = p.getInc(); //inclination
+
+	double slr = findP(a, ecc); //semi-latus rectum
+	double M = findM(per, t); //Mean Anomoly
+	double E = findE(NEWTON_DEPTH, NEWTON_GUESS, M, ecc);
+	double theta = findTheta(ecc, E);
+	double dist = findDist(slr, ecc, theta);
+
+	double x = dist * sin(theta);
+	double z = dist * -cos(theta);
+
+	Vector r(x, 0, z);
+	r = rotVecIntoOrbit(r, lan, i, apa);
+
+	/*Point o(0, 0, 0); Flavor number 2
+	 Point newEye = moveAlong(o, r);
+	 r.normalize();
+	 newEye = moveAlong(newEye, scale(r, 2*p.getRadius()));
+
+	 camera.set(newEye, o, camera.getV(), camera.getFOV());*/
+
+	Point o(0, 0, 0);
+	Point look = moveAlong(o, r);
+	Point newEye = moveAlong(look, scale(camera.getN(), p.getRadius() * 10));
+
+	camera.set(newEye, look, camera.getV(), camera.getFOV());
+
+}
+
 int main(int argc, char **argv) {
+	startCamera = false;
 	initDisplay(argc, argv);
 	init();
 	initTextures();
 
-	//createUniverse();
 	createTest();
 
 	mainLoop();
@@ -141,8 +171,10 @@ void initDisplay(int& argc, char** argv) {
 
 	SDL_WM_SetCaption("Solar System Sim", "Solar System Sim");
 
-	mouseCap = false;
+	mouseCap = true;
+	SDL_WM_GrabInput(SDL_GRAB_ON);
 	SDL_ShowCursor(0);
+
 }
 
 void init() {
@@ -164,8 +196,12 @@ void init() {
 	Point eye(660, 400, 0);
 	Point lookAt(0, 0, 0);
 	Vector up(0, 1, 0);
+	/*Point eye(5, 0, 0); //TESTING FOR THE MOUSE STUFF
+	 Point lookAt(0, 0, 0);
+	 Vector up(0, 1, 0);*/
 
-	camera.set(eye, lookAt, up, 90);
+	camera.set(eye, lookAt, up, 70);
+
 }
 
 void initTextures() {
@@ -257,6 +293,14 @@ void initTextures() {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
 	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
 			texture->getData());
+
+	texture->readFile("./textures/starmap.bmp");
+		glBindTexture(GL_TEXTURE_2D, 10);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+		texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+				texture->getData());
 }
 
 void mainLoop() {
@@ -294,19 +338,19 @@ void mainLoop() {
 
 		if (forward && shift)
 			dn -= MOVE_SPEED * FASTER;
-		else if(forward)
+		else if (forward)
 			dn -= MOVE_SPEED;
 		if (backward && shift)
 			dn += MOVE_SPEED * FASTER;
-		else if(backward)
+		else if (backward)
 			dn += MOVE_SPEED;
 		if (left && shift)
 			du -= MOVE_SPEED * FASTER;
-		else if(left)
+		else if (left)
 			du -= MOVE_SPEED;
 		if (right && shift)
 			du += MOVE_SPEED * FASTER;
-		else if(right)
+		else if (right)
 			du += MOVE_SPEED;
 		if (ccw)
 			camera.roll(-ROT_SPEED);
@@ -381,6 +425,9 @@ bool keyDown(SDL_keysym *keysym) {
 	case SDLK_MINUS:
 		t_factor *= 0.1;
 		break;
+	case SDLK_BACKQUOTE:
+		goToPlanet(sun->getChild(2));
+		break;
 	default:
 		return true;
 	}
@@ -429,8 +476,13 @@ void keyUp(SDL_keysym *keysym) {
 }
 
 void mouseMotion(SDL_MouseMotionEvent *m) {
-	camera.pitch((double) m->yrel * MOUSE_SENSITIVITY);
-	camera.yaw((double) m->xrel * MOUSE_SENSITIVITY);
+	double dy = (double) m->yrel;
+	double dx = (double) m->xrel;
+
+	if (startCamera)
+		camera.pitch(dy * MOUSE_SENSITIVITY);
+	if (startCamera)
+		camera.yaw(dx * MOUSE_SENSITIVITY);
 }
 
 void reshape(int x, int y) {
@@ -441,55 +493,39 @@ void reshape(int x, int y) {
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 
-	if (!lock) {
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(camera.getFOV(), aspect, 0.01, 5000.0);
-		Point pos = camera.getEye();
-		Point dir = moveAlong(pos, invert(camera.getN()));
-		Vector up = camera.getV();
-		gluLookAt(pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, up.x, up.y, up.z);
+	Vector n = camera.getN();
+	std::cout << "n: ";
+	n.display();
 
-	} /*else {
+	if (lock)
+		goToPlanet(sun->getChild(planet));
 
-		double a = JUPITER_SEMI_MAJOR; //p.getSemiMajor();
-		double ecc = JUPITER_ECC; //p.getEcc();
-		double per = JUPITER_PER; //p.getPeriod();
-		double lan = JUPITER_OM; //p.getOmega(); //Longitude of Ascending Node
-		double apa = JUPITER_W; //p.getW(); //Argument of Periapsis
-		double i = JUPITER_INC; //p.getInc(); //inclination
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(camera.getFOV(), aspect, 0.01, 20000.0);
+	Point pos = camera.getEye();
+	Point dir = moveAlong(pos, invert(camera.getN()));
+	Vector up = camera.getV();
 
-		double slr = findP(a, ecc); //semi-latus rectum
-		double M = findM(per, t); //Mean Anomoly
-		double E = findE(NEWTON_DEPTH, NEWTON_GUESS, M, ecc);
-		double theta = findTheta(ecc, E);
-		double dist = findDist(slr, ecc, theta);
-
-		double x = dist * sin(theta);
-		double z = dist * -cos(theta);
-
-		Vector r(x, 0, z);
-		r = rotVecIntoOrbit(r, lan, i, apa);
-
-		Point o(0, 0, 0);
-
-		Point newEye = moveAlong(o, scale(r, 1.3));
-		Point newLook = moveAlong(o, scale(r, 1.0)); //= moveAlong(newEye, invert(camera.getN()));
-
-		camera.set(newEye, newLook, camera.getV(), camera.getFOV());
-
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(camera.getFOV(), aspect, 0.01, 5000.0);
-		Point pos = camera.getEye();
-		Point dir = moveAlong(pos, invert(camera.getN()));
-		Vector up = camera.getV();
-		gluLookAt(pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, up.x, up.y, up.z);
-
-	}*/
+	gluLookAt(pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, up.x, up.y, up.z);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	startCamera = true;
+
+	glPushMatrix();
+
+	GLUquadricObj * starmap = gluNewQuadric();
+	gluQuadricNormals(starmap, GLU_SMOOTH);
+	gluQuadricTexture(starmap, GL_TRUE);
+
+	glBindTexture(GL_TEXTURE_2D, 10);
+
+	glRotated(-90, 1, 0, 0);
+	gluSphere(starmap, 12500, 200, 200);
+
+	glPopMatrix();
+
 	drawBody(*sun);
 	glFlush();
 }
@@ -578,38 +614,17 @@ void drawBody(CelestialBody p) {
 		x = dist * sin(theta);
 		z = dist * -cos(theta);
 
-		//todo USE VECTOR R rather than glRotated
-
 		Vector r(x, 0, z);
 		r = rotVecIntoOrbit(r, lan, i, apa);
 
 		glTranslated(r.x, r.y, r.z);
-
-		if (lock && p.getId() == planet) {
-
-			Point o(0,0,0);
-			Point lPos = moveAlong(o, scale(r, 1.1));
-			Point lLook = moveAlong(o, r);
-			Vector lup = camera.getV();
-			camera.set(lPos, lLook, lup, camera.getFOV());
-
-			glMatrixMode(GL_PROJECTION);
-			gluPerspective(camera.getFOV(), aspect, 0.01, 2000.0);
-			Point pos = camera.getEye();
-			Point dir = moveAlong(pos, invert(camera.getN()));
-			Vector up = camera.getV();
-			gluLookAt(pos.x, pos.y, pos.z, dir.x, dir.y, dir.z, up.x, up.y,
-					up.z);
-
-			glMatrixMode(GL_MODELVIEW);
-		}
 
 		glPushMatrix();
 
 	}
 	glRotated(p.getATilt(), 1, 0, 0);
 	glRotated(360 * t / p.getRotPer(), 0, 1, 0); //rotation as a function of time!
-	glRotated(-90, 1, 0, 0);//TODO Axial Tilt
+	glRotated(-90, 1, 0, 0);
 	gluSphere(sph, p.getRadius(), 100, 100);
 	glPopMatrix();
 
