@@ -9,7 +9,7 @@ double t_factor;
 
 double aspect = 1.0;
 double lock = true;
-int planet = 8;
+int planet = 2;
 bool startCamera;
 
 Camera camera;
@@ -295,12 +295,12 @@ void initTextures() {
 			texture->getData());
 
 	texture->readFile("./textures/starmap.bmp");
-		glBindTexture(GL_TEXTURE_2D, 10);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
-		texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-				texture->getData());
+	glBindTexture(GL_TEXTURE_2D, 10);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+	texture->getWidth(), texture->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+			texture->getData());
 }
 
 void mainLoop() {
@@ -425,8 +425,19 @@ bool keyDown(SDL_keysym *keysym) {
 	case SDLK_MINUS:
 		t_factor *= 0.1;
 		break;
-	case SDLK_BACKQUOTE:
-		goToPlanet(sun->getChild(2));
+	case SDLK_k:
+		if (lock) {
+			if (planet == 8)
+				planet = 0;
+			else
+				planet++;
+		}
+		break;
+	case SDLK_l:
+		if (lock == true)
+			lock = false;
+		else
+			lock = true;
 		break;
 	default:
 		return true;
