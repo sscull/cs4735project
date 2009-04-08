@@ -70,6 +70,9 @@ Vector cross(Vector s, Vector t) {
 
 Point moveAlong(Point o, Vector d) {
 	Point r(o.x + d.x, o.y + d.y, o.z + d.z);
+	/*cout<<"o: ";o.display();
+	cout<<"d: ";d.display();
+	cout<<"r: ";r.display();*/
 	return r;
 }
 
