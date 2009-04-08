@@ -110,6 +110,35 @@
 #define JUPITER_INC 1.305
 #define JUPITER_W 275.066
 
+//JUPITER MOONS:
+//IO
+#define IO_ID 51
+
+#define IO_R 11.0.286
+#define IO_ROT_PER 1.769137786 / YEAR
+#define IO_ATILT 0
+
+#define IO_SEMI_MAJOR 3.95206395901533 * FACTOR
+#define IO_ECC 0.0041
+#define IO_PER 1.769137786 / YEAR
+#define IO_OM 0
+#define IO_INC 2.21
+#define IO_W 0
+
+//EUROPA
+#define EUROPA_ID 5
+
+#define EUROPA_R 0.245
+#define EUROPA_ROT_PER 3.551181 / YEAR
+#define EUROPA_ATILT 3.13
+
+#define EUROPA_SEMI_MAJOR 3.95206395901533 * FACTOR
+#define EUROPA_ECC 0.009
+#define EUROPA_PER 3.551181 / YEAR
+#define EUROPA_OM 100.492
+#define EUROPA_INC 1.305
+#define EUROPA_W 275.066
+
 //SATURN
 
 #define SATURN_ID 6
