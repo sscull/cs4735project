@@ -46,10 +46,6 @@ void Vector::normalize() {
 	z = z / size;
 }
 
-void Vector::display() {
-	cout << "x = " << x << ", y = " << y << ", z = " << z << endl;
-}
-
 Vector::~Vector() {
 }
 
@@ -70,9 +66,6 @@ Vector cross(Vector s, Vector t) {
 
 Point moveAlong(Point o, Vector d) {
 	Point r(o.x + d.x, o.y + d.y, o.z + d.z);
-	/*cout<<"o: ";o.display();
-	cout<<"d: ";d.display();
-	cout<<"r: ";r.display();*/
 	return r;
 }
 

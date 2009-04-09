@@ -34,9 +34,5 @@ void Point::buildTuple(double v[]){
 	v[3] = 1.0;
 }
 
-void Point::display(){
-	cout<<"x = "<<x<<", y = "<<y<<", z = "<<z<<endl;
-}
-
 Point::~Point() {
 }

@@ -19,7 +19,6 @@ public:
 	void set(Vector);
 	void setByDiff(Point, Point);
 	void normalize();
-	void display();
 	virtual ~Vector();
 	double x;
 	double y;

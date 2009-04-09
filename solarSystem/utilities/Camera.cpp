@@ -26,10 +26,6 @@ void Camera::set(Point newEye, Point lookAt, Vector up, double newfov){
 	v.set(cross(n, u));
 	v.normalize();
 	fov = newfov;
-	cout<<"eye: ";eye.display();
-	cout<<"n: ";n.display();
-	cout<<"u: ";u.display();
-	cout<<"v: ";v.display();
 }
 
 Vector Camera::getU(void){

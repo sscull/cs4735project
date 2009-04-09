@@ -8,8 +8,6 @@
 #ifndef POINT_H_
 #define POINT_H_
 
-#include <iostream>
-
 class Point {
 public:
 	Point();
@@ -17,7 +15,6 @@ public:
 	void set(double, double, double);
 	void set(Point);
 	void buildTuple(double []);
-	void display(void);
 	virtual ~Point();
 	double x;
 	double y;

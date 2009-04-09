@@ -61,8 +61,8 @@ bool Image::readFile(std::string filename) {
 	imgFile.read((char*) &dummy32, sizeof(dummy32));
 	imgFile.read((char*) &dummy32, sizeof(dummy32));
 
-	imgFile.read((char*) &w, sizeof(dummy32));
-	imgFile.read((char*) &h, sizeof(dummy32));
+	imgFile.read((char*) &w, sizeof(dummy32)); //width
+	imgFile.read((char*) &h, sizeof(dummy32)); //height
 
 	imgFile.read((char*) &dummy16, sizeof(dummy16));
 	imgFile.read((char*) &dummy16, sizeof(dummy16));
