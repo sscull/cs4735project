@@ -22,6 +22,9 @@ GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat yellow[] = { 1.0, 1.0, 0.55, 1.0 };
 GLfloat black[] = { 0.0, 0.0, 0.0, 1.0 };
 
+/*takes a vector and 3 angles and rotates it from the ecliptic plane
+ * to the proper orbital plane and returns that transformed vector.
+ */
 Vector rotVecIntoOrbit(Vector r, double om, double i, double w) {
 
 	double omRad = om * M_PI / 180.0;
@@ -47,6 +50,10 @@ Vector rotVecIntoOrbit(Vector r, double om, double i, double w) {
 
 }
 
+/*
+ * Numerical Methods was used to approximate a function that is
+ * unsolvable any other way. E is the goal and it is the eccentric anomoly.
+ */
 double findE(int n, double E, double M, double ecc) {
 
 	double newE = E - ((E - ecc * sin(E) - M) / (1 - ecc * cos(E)));
@@ -58,24 +65,41 @@ double findE(int n, double E, double M, double ecc) {
 
 }
 
+/*
+ * find mean anomoly from required parameters.
+ */
 double findM(double per, double t) {
 	return (2 * M_PI * t) / per;
 }
 
+/*
+ * Find's the true anomoly for the eliptical orbit
+ */
 double findTheta(double e, double E) {
 
 	return 2 * atan(sqrt((1 + e) / (1 - e)) * tan(E / 2));
 
 }
 
+/*
+ * Find the Semi-latus rectum of the elipse
+ */
 double findP(double a, double ecc) {
 	return a * (1 - ecc) * (1 - ecc);
 }
 
+/*
+ * Find the distance to the planet along the true anomoly
+ */
 double findDist(double p, double ecc, double theta) {
 	return p / (1 + ecc * cos(theta));
 }
 
+/*
+ * Sets the camera 10 times the radius away from the planet
+ * looking at the planet, but it keeps the same orientation
+ * from before the method was called.
+ */
 void goToPlanet(CelestialBody p) {
 
 	double a = p.getSemiMajor();
@@ -96,13 +120,6 @@ void goToPlanet(CelestialBody p) {
 
 	Vector r(x, 0, z);
 	r = rotVecIntoOrbit(r, lan, i, apa);
-
-	/*Point o(0, 0, 0); Flavor number 2
-	 Point newEye = moveAlong(o, r);
-	 r.normalize();
-	 newEye = moveAlong(newEye, scale(r, 2*p.getRadius()));
-
-	 camera.set(newEye, o, camera.getV(), camera.getFOV());*/
 
 	Point o(0, 0, 0);
 	Point look = moveAlong(o, r);
@@ -196,14 +213,14 @@ void init() {
 	Point eye(660, 400, 0);
 	Point lookAt(0, 0, 0);
 	Vector up(0, 1, 0);
-	/*Point eye(5, 0, 0); //TESTING FOR THE MOUSE STUFF
-	 Point lookAt(0, 0, 0);
-	 Vector up(0, 1, 0);*/
 
 	camera.set(eye, lookAt, up, 70);
 
 }
 
+/*
+ * reads and binds the textures to planet id.
+ */
 void initTextures() {
 	Image* texture = new Image();
 	texture->readFile("./textures/sun.bmp");
@@ -391,6 +408,9 @@ void initTextures() {
 			texture->getData());
 }
 
+/*
+ * our main event loop
+ */
 void mainLoop() {
 	bool loop = true;
 	SDL_Event event;
@@ -593,10 +613,10 @@ void reshape(int x, int y) {
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 
-	Vector n = camera.getN();
-	std::cout << "n: ";
-	n.display();
-
+	/*
+	 * if locking is enabled then constantly go to
+	 * the planet that is currently selected
+	 */
 	if (lock)
 		goToPlanet(sun->getChild(planet));
 
@@ -630,6 +650,10 @@ void display() {
 	glFlush();
 }
 
+/*
+ * creates an object for each planet and sets up the heirarchy
+ * Ex. Sun -> Earth -> Moon
+ */
 void createTest() {
 	t = 0.0;
 	t_factor = 0.00001;
@@ -726,6 +750,9 @@ void createTest() {
 	sun->addChild(*child9);
 }
 
+/*
+ * Our recursive method that draws the planets
+ */
 void drawBody(CelestialBody p) {
 
 	glPushMatrix();
