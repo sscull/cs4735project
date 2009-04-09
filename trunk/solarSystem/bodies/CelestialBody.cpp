@@ -40,7 +40,7 @@ int CelestialBody::hasChildren() const {
 	return children.size();
 }
 
-//*****
+//*****Planet Methods
 
 float CelestialBody::getRadius() const {
 	return radius;
@@ -54,7 +54,7 @@ float CelestialBody::getATilt() const {
 	return aTilt;
 }
 
-//*****
+//*****Oribital Methods
 
 float CelestialBody::getSemiMajor() const {
 	return semiMaj;
