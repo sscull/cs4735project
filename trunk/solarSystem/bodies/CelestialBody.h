@@ -2,10 +2,6 @@
 #define CELESTIALBODY_H_
 
 #include <vector>
-#include <cmath>
-#include <string>
-
-#include "../utilities/Point.h"
 
 namespace solarSystem {
 class CelestialBody;

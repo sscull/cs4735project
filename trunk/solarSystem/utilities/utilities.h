@@ -9,8 +9,6 @@
 #define UTILITIES_H_
 
 #import "Camera.h"
-#import "Point.h"
-#import "Vector.h"
 #import "Image.h"
 
 #endif /* UTILITIES_H_ */
